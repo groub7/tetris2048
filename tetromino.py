@@ -120,7 +120,34 @@ class Tetromino:
                     else:  # direction == "down"
                         self.tile_matrix[row][col].move(0, -1)
         return True  # successful move in the given direction
+       def rotate(self, game_grid):
+      # if not (self.can_be_rotated(game_grid)):
+      #    return False
+      n = len(self.tile_matrix)  # n = number of rows = number of columns
+      rotated_matrix = np.rot90(self.tile_matrix, k=1, axes = (1,0))
+      self.tile_matrix = rotated_matrix
 
+
+      for row in range(n):
+         for col in range(n):
+            if self.tile_matrix[row][col] != None:
+               self.tile_matrix[row][col].rotate(game_grid)
+
+
+      # n = len(self.tile_matrix)  # n = number of rows = number of columns
+      # rotated_matrix = np.full((n, n), None)
+      # # if key_typed == "up":
+      #
+      #
+      # for row in range(n):
+      #    for col in range(n):
+      #       if self.tile_matrix[row][col] != None:
+      #          rotated_matrix[col][n - 1 - row] = self.tile_matrix[row][col]
+
+      return True
+
+   def can_be_rotated(self, game_grid):
+      return True
     # Method to check if the tetromino can be moved in the given direction or not
     def can_be_moved(self, dir, game_grid):
         n = len(self.tile_matrix)  # n = number of rows = number of columns

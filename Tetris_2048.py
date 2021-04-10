@@ -72,12 +72,11 @@ def start():
             # by using the create_tetromino function defined below
             current_tetromino = create_tetromino(grid_h, grid_w)
             grid.current_tetromino = current_tetromino
-
+        grid.clear(grid_w, grid_h)
         # display the game grid and as well the current tetromino
         grid.display()
 
     print("Game over")
-
 
 # Function for creating random shaped tetrominoes to enter the game grid
 def create_tetromino(grid_height, grid_width):

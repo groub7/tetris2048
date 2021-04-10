@@ -138,7 +138,6 @@ class Tetromino:
       #                self.tile_matrix[row][col].move(-1, 0)
 
       rotated_matrix = np.full((n, n), None)
-
       for row in range(n):
          for col in range(n):
             if self.tile_matrix[row][col] != None:

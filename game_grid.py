@@ -108,3 +108,19 @@ class GameGrid:
                         self.game_over = True
         # return the game_over flag
         return self.game_over
+
+    def clear(self, row, col):
+
+        for y in range(0, col):
+            full = True
+            for x in range(0, row):
+
+                if self.tile_matrix[y][x] is None:
+                    full = False
+                    continue
+
+            if full:
+                self.tile_matrix = np.delete(self.tile_matrix, y)
+                # self.tile_matrix = np.add(row, col, None)
+                np.append(self.tile_matrix, np.full(col, None))
+                y = 0

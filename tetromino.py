@@ -143,6 +143,14 @@ class Tetromino:
         return True
 
     def can_be_rotated(self, game_grid):
+
+        # added these 2 lines for not passing blocks
+        if not (self.can_be_moved("left", game_grid)):
+            return False
+
+        if not (self.can_be_moved("right", game_grid)):
+            return False
+
         n = len(self.tile_matrix)  # n = number of rows = number of columns
         rotated_matrix = np.full((n, n), None)
         positions = []

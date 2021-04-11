@@ -195,7 +195,7 @@ class Tetromino:
         #    print(str(positions[i].x) + ", " +
 
         for i in range(len(positions)):
-            if game_grid.is_occupied(positions[i].x, positions[i].y):
+            if game_grid.is_occupied(positions[i].y, positions[i].x):
                 return False
 
         return True

@@ -6,11 +6,14 @@ from picture import Picture  # used representing images to display
 import os  # used for file and directory operations
 from color import Color  # used for coloring the game menu
 
-
 # MAIN FUNCTION OF THE PROGRAM
 # -------------------------------------------------------------------------------
 # Main function where this program starts execution
+SCORE = 0
+
+
 def start():
+    global SCORE
     # set the dimensions of the game grid
     grid_h, grid_w = 20, 12
     # set the size of the drawing canvas
@@ -49,10 +52,13 @@ def start():
                 # (causes the tetromino to fall down faster)
                 current_tetromino.move(key_typed, grid)
             elif key_typed == "space":
-                for i in range(18):
+                for _ in range(18):
                     current_tetromino.move('down', grid)
             elif key_typed == "up":
                 current_tetromino.rotate(grid)
+            # TODO pause function
+            elif key_typed == "p":
+                pass
             # clear the queue that stores all the keys pressed/typed
             stddraw.clearKeysTyped()
 
@@ -72,17 +78,20 @@ def start():
             # by using the create_tetromino function defined below
             current_tetromino = create_tetromino(grid_h, grid_w)
             grid.current_tetromino = current_tetromino
-        grid.clear(grid_w, grid_h)
+        # TODO clear function's return type
+        SCORE = SCORE + grid.clear(grid_w, grid_h) * 100
         # display the game grid and as well the current tetromino
         grid.display()
-
+    print(SCORE)
     print("Game over")
 
+
 # Function for creating random shaped tetrominoes to enter the game grid
-def create_tetromino(grid_height, grid_width):
+def create_tetromino (grid_height, grid_width):
     # type (shape) of the tetromino is determined randomly
     tetromino_types = ['I', 'O', 'Z', 'S', 'L', 'J', 'T']
-    #tetromino_types = ['I', 'O', 'Z', 'S', 'L', 'J', 'T']
+    # DEBUG VALUES
+    # tetromino_types = ['I']
     random_index = random.randint(0, len(tetromino_types) - 1)
     random_type = tetromino_types[random_index]
     # create and return the tetromino
@@ -130,8 +139,8 @@ def display_game_menu(grid_height, grid_width):
             # get the x and y coordinates of the location at which the mouse has
             # most recently been left-clicked
             mouse_x, mouse_y = stddraw.mouseX(), stddraw.mouseY()
-            if mouse_x >= button_blc_x and mouse_x <= button_blc_x + button_w:
-                if mouse_y >= button_blc_y and mouse_y <= button_blc_y + button_h:
+            if button_blc_x <= mouse_x <= button_blc_x + button_w:
+                if button_blc_y <= mouse_y <= button_blc_y + button_h:
                     break  # break the loop to end the method and start the game
 
 

@@ -109,20 +109,33 @@ class GameGrid:
         # return the game_over flag
         return self.game_over
 
+    # Looks at the grid and clears full lines, then updates the places of upper tiles.
     def clear(self, row, col):
-
-        for y in range(0, col):
-            full = True
-            for x in range(0, row):
-
-                if self.tile_matrix[y][x] is None:
-                    full = False
-                    continue
-
-            if full:
-                print(self.tile_matrix, "\n\n\n")
-                self.tile_matrix = np.delete(self.tile_matrix, y, axis=0)
-                print(self.tile_matrix)
-                self.tile_matrix = np.append(self.tile_matrix, [np.full(row, None)], axis=0)
-                y = 0
-        return self.tile_matrix
+        number_of_pushes = 0
+        has_clearing_started = False  # If there is a full line this frame, then the clearing process is started.
+        # Going through the rows from bottom to top.
+        for y in range(col):
+            is_full = False
+            tile_counter = 0
+            # Count the number of tiles in the line
+            for x in range(row):  # Going through each tile from left to right
+                if self.tile_matrix[y][x] is not None:
+                    tile_counter += 1
+            # If it is equal to row count then the line is full
+            if tile_counter == row:
+                is_full = True
+                has_clearing_started = True
+            if has_clearing_started:
+                if is_full:
+                    number_of_pushes += 1
+                    for x in range(row):  # Going through each tile from left to right
+                        self.tile_matrix[y][x] = None
+                else:
+                    for x in range(row):  # Going through each tile from left to right
+                        # Updating both the positions and the tile arrays
+                        if self.tile_matrix[y][x] is not None:
+                            self.tile_matrix[y][x].position.y -= number_of_pushes
+                            self.tile_matrix[y - number_of_pushes][x] = self.tile_matrix[y][x]
+                            self.tile_matrix[y][x] = None
+        # Return the number of pushes, which is equal to the number of lines cleared at the end of the process
+        return number_of_pushes

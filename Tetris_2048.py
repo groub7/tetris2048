@@ -20,8 +20,8 @@ def start():
     canvas_h, canvas_w = 40 * grid_h, 40 * grid_w
     stddraw.setCanvasSize(canvas_w, canvas_h)
     # set the scale of the coordinate system
-    stddraw.setXscale(-0.5, grid_w - 0.5)
-    stddraw.setYscale(-0.5, grid_h - 0.5)
+    stddraw.setXscale(-2, grid_w + 0.5)
+    stddraw.setYscale(-2, grid_h + 0.5)
 
     # create the game grid
     grid = GameGrid(grid_h, grid_w)
@@ -79,8 +79,9 @@ def start():
             current_tetromino = create_tetromino(grid_h, grid_w)
             grid.current_tetromino = current_tetromino
         # TODO clear function's return type
-        # SCORE = SCORE + grid.clear(grid_w, grid_h) * 100
+        SCORE = SCORE + grid.clear(grid_w, grid_h) * 100
         # display the game grid and as well the current tetromino
+        # grid.clear(grid_w, grid_h)
         grid.display()
     print(SCORE)
     print("Game over")
@@ -89,9 +90,9 @@ def start():
 # Function for creating random shaped tetrominoes to enter the game grid
 def create_tetromino (grid_height, grid_width):
     # type (shape) of the tetromino is determined randomly
-    tetromino_types = ['I', 'O', 'Z', 'S', 'L', 'J', 'T']
+    # tetromino_types = ['I', 'O', 'Z', 'S', 'L', 'J', 'T']
     # DEBUG VALUES
-    # tetromino_types = ['I']
+    tetromino_types = ['I']
     random_index = random.randint(0, len(tetromino_types) - 1)
     random_type = tetromino_types[random_index]
     # create and return the tetromino

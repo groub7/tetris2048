@@ -127,22 +127,11 @@ class Tetromino:
             print("cannot rotate occupied")
             return False
 
-        # elif (self.can_be_rotated(game_grid) == 'left' or self.can_be_rotated(game_grid) == 'right'):
-        #    print("anan")
-        #    direction = self.can_be_rotated(game_grid)
-        #    for row in range(n):
-        #       for col in range(n):
-        #          if self.tile_matrix[row][col] != None:
-        #             if direction == "left":
-        #                print("moving right")
-        #                self.tile_matrix[row][col].move(1, 0)
-        #             elif direction == "moving left":
-        #                self.tile_matrix[row][col].move(-1, 0)
-
         # Push amount in case of overflow from edges.
         push_right_num = 0
         push_left_num = 0
 
+        # Rotating the tiles.
         rotated_matrix = np.full((n, n), None)
         for row in range(n):
             for col in range(n):
@@ -156,27 +145,20 @@ class Tetromino:
                         push_right_num += 1
                     elif position.x >= game_grid.grid_width:
                         push_left_num += 1
-
                     rotated_matrix[col][n - 1 - row].set_position(position)
 
+        # Updating the tile matrix of the tetromino with the rotated one
         self.tile_matrix = rotated_matrix
 
         if push_left_num + push_right_num > 0:  # If there is overflow
-            for i in range(push_right_num):
+            for i in range(push_right_num):     # Push to the right
                 self.move("right", game_grid)
-            for i in range(push_left_num):
+            for i in range(push_left_num):      # Push to the left
                 self.move("left", game_grid)
         return True
 
+    # Check if the tetromino can be rotated
     def can_be_rotated(self, game_grid):
-
-        # added these 2 lines for not passing blocks
-        # if not (self.can_be_moved("left", game_grid)):
-        #    return False
-        #
-        # if not (self.can_be_moved("right", game_grid)):
-        #    return False
-
         n = len(self.tile_matrix)  # n = number of rows = number of columns
         rotated_matrix = np.full((n, n), None)
         positions = []
@@ -191,8 +173,6 @@ class Tetromino:
                     positions.append(position)
                     if position.y < 0:
                         return False
-        # for i in range(len(positions)):
-        #    print(str(positions[i].x) + ", " +
 
         for i in range(len(positions)):
             if game_grid.is_occupied(positions[i].y, positions[i].x):

@@ -120,7 +120,9 @@ class GameGrid:
                     continue
 
             if full:
-                self.tile_matrix = np.delete(self.tile_matrix, y)
-                # self.tile_matrix = np.add(row, col, None)
-                np.append(self.tile_matrix, np.full(col, None))
+                print(self.tile_matrix, "\n\n\n")
+                self.tile_matrix = np.delete(self.tile_matrix, y, axis=0)
+                print(self.tile_matrix)
+                self.tile_matrix = np.append(self.tile_matrix, [np.full(row, None)], axis=0)
                 y = 0
+        return self.tile_matrix

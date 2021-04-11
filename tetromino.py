@@ -189,6 +189,8 @@ class Tetromino:
                     position.x = bottom_left.x + (n - 1 - row)
                     position.y = bottom_left.y + (n - 1 - col)
                     positions.append(position)
+                    if position.y < 0:
+                        return False
         # for i in range(len(positions)):
         #    print(str(positions[i].x) + ", " +
 

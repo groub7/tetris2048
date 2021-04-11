@@ -79,7 +79,7 @@ def start():
             current_tetromino = create_tetromino(grid_h, grid_w)
             grid.current_tetromino = current_tetromino
         # TODO clear function's return type
-        SCORE = SCORE + grid.clear(grid_w, grid_h) * 100
+        # SCORE = SCORE + grid.clear(grid_w, grid_h) * 100
         # display the game grid and as well the current tetromino
         grid.display()
     print(SCORE)

@@ -5,7 +5,7 @@ from tetromino import Tetromino  # class for modeling the tetrominoes
 from picture import Picture  # used representing images to display
 import os  # used for file and directory operations
 from color import Color  # used for coloring the game menu
-
+import keyboard  # using module keyboard
 # MAIN FUNCTION OF THE PROGRAM
 # -------------------------------------------------------------------------------
 # Main function where this program starts execution
@@ -51,14 +51,21 @@ def start():
                 # move the tetromino down by one
                 # (causes the tetromino to fall down faster)
                 current_tetromino.move(key_typed, grid)
+
+            #instant drop
             elif key_typed == "space":
                 for _ in range(18):
                     current_tetromino.move('down', grid)
+            #rotate
             elif key_typed == "up":
                 current_tetromino.rotate(grid)
-            # TODO pause function
+            #pause
             elif key_typed == "p":
-                pass
+                while True:
+                    if keyboard.is_pressed('r'):  # if key 'q' is pressed
+                        print('Game Paused!')
+                        break  # finishing the loop
+
             # clear the queue that stores all the keys pressed/typed
             stddraw.clearKeysTyped()
 

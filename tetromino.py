@@ -175,8 +175,7 @@ class Tetromino:
 
     def rotate(self, game_grid):
         n = len(self.tile_matrix)  # n = number of rows = number of columns
-        if (self.can_be_rotated(game_grid) == False):
-            print("cannot rotate occupied")
+        if not self.can_be_rotated(game_grid):
             return False
 
         # Push amount in case of overflow from edges.

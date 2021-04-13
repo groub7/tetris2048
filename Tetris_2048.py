@@ -12,11 +12,13 @@ import keyboard
 # Main function where this program starts execution
 SCORE = 0
 CLEARED = 0
+PAUSE_COUNTER = 0
 
 
 def start():
     global SCORE
     global CLEARED
+    global PAUSE_COUNTER
     # Timer for block downfall
     timer_start = -999
     game_speed = 0.5  # In seconds
@@ -26,8 +28,8 @@ def start():
     canvas_h, canvas_w = 40 * grid_h, 40 * grid_w
     stddraw.setCanvasSize(canvas_w, canvas_h)
     # set the scale of the coordinate system
-    stddraw.setXscale(-2, grid_w + 0.5)
-    stddraw.setYscale(-2, grid_h + 0.5)
+    stddraw.setXscale(-0.5, grid_w - 0.5)
+    stddraw.setYscale(-0.5, grid_h - 0.5)
 
     # create the game grid
     grid = GameGrid(grid_h, grid_w)
@@ -38,6 +40,8 @@ def start():
 
     # display a simple menu before opening the game
     display_game_menu(grid_h, grid_w)
+    stddraw.setXscale(-0.5, grid_w + 2)
+    stddraw.setYscale(-0.5, grid_h + 2)
 
     # Start timer
     game_start_time = perf_counter()
@@ -67,13 +71,12 @@ def start():
                 current_tetromino.rotate(grid)
             #pause
             elif key_typed == "p":
-                pass
-                while True:
-                    if keyboard.is_pressed('r'):  # if key 'q' is pressed
-                        print('Game Paused!')
-                        break  # finishing the loop
+                PAUSE_COUNTER = PAUSE_COUNTER + 1
+                if PAUSE_COUNTER % 2 == 1:
+                    keyboard.wait("p")
+
             #restart
-            elif key_typed == "v":
+            elif key_typed == "r":
                 current_tetromino.clear_tetro(grid)
                 grid.clearEverything(grid_w, grid_h)
                 SCORE = 0
@@ -103,7 +106,6 @@ def start():
             # After spawning move the block once and update success or instant game over
             success = current_tetromino.move("down", grid)
 
-        # TODO clear function's return type
         CLEARED += grid.clear(grid_w, grid_h)
         SCORE += CLEARED * 100
         # display the game grid and as well the current tetromino

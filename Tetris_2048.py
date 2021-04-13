@@ -11,10 +11,12 @@ from time import perf_counter
 # -------------------------------------------------------------------------------
 # Main function where this program starts execution
 SCORE = 0
+CLEARED = 0
 
 
 def start():
     global SCORE
+    global CLEARED
     # Timer for block downfall
     timer_start = -999
     game_speed = 0.5  # In seconds
@@ -37,7 +39,7 @@ def start():
     # display a simple menu before opening the game
     display_game_menu(grid_h, grid_w)
 
-    # Difficulty timer
+    # Start timer
     game_start_time = perf_counter()
     # main game loop (keyboard interaction for moving the tetromino)
     while True:
@@ -71,7 +73,7 @@ def start():
 
         # move (drop) the tetromino down by 1 after set amount of time
         end_time = perf_counter()
-        if end_time - timer_start >= game_speed:
+        if end_time - timer_start >= game_speed - CLEARED * 0.025:
             success = current_tetromino.move("down", grid)
             timer_start = perf_counter()
 
@@ -92,7 +94,8 @@ def start():
             success = current_tetromino.move("down", grid)
 
         # TODO clear function's return type
-        SCORE = SCORE + grid.clear(grid_w, grid_h) * 100
+        CLEARED += grid.clear(grid_w, grid_h)
+        SCORE += CLEARED * 100
         # display the game grid and as well the current tetromino
         # grid.clear(grid_w, grid_h)
         grid.display()
@@ -101,7 +104,7 @@ def start():
 
 
 # Function for creating random shaped tetrominoes to enter the game grid
-def create_tetromino (grid_height, grid_width):
+def create_tetromino(grid_height, grid_width):
     # type (shape) of the tetromino is determined randomly
     # tetromino_types = ['I', 'O', 'Z', 'S', 'L', 'J', 'T']
     # DEBUG VALUES

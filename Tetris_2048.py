@@ -6,16 +6,18 @@ from picture import Picture  # used representing images to display
 import os  # used for file and directory operations
 from color import Color  # used for coloring the game menu
 from time import perf_counter
+import keyboard
 
 # MAIN FUNCTION OF THE PROGRAM
 # -------------------------------------------------------------------------------
 # Main function where this program starts execution
 SCORE = 0
 CLEARED = 0
+PAUSE_COUNTER = 0
 
 
 def start():
-    global SCORE
+    global SCORE, PAUSE_COUNTER
     global CLEARED
     # Timer for block downfall
     timer_start = -999
@@ -26,8 +28,8 @@ def start():
     canvas_h, canvas_w = 40 * grid_h, 40 * grid_w
     stddraw.setCanvasSize(canvas_w, canvas_h)
     # set the scale of the coordinate system
-    stddraw.setXscale(-2, grid_w + 0.5)
-    stddraw.setYscale(-2, grid_h + 0.5)
+    stddraw.setXscale(-0.5, grid_w - 0.5)
+    stddraw.setYscale(-0.5, grid_h - 0.5)
 
     # create the game grid
     grid = GameGrid(grid_h, grid_w)
@@ -38,6 +40,8 @@ def start():
 
     # display a simple menu before opening the game
     display_game_menu(grid_h, grid_w)
+    stddraw.setXscale(-0.5, grid_w + 2)
+    stddraw.setYscale(-0.5, grid_h + 2)
 
     # Start timer
     game_start_time = perf_counter()
@@ -65,9 +69,12 @@ def start():
                     success = False # Don't allow for any movement after pressing space
             elif key_typed == "up":
                 current_tetromino.rotate(grid)
-            # TODO pause function
+            # pause function
             elif key_typed == "p":
-                pass
+                PAUSE_COUNTER = PAUSE_COUNTER + 1
+                if PAUSE_COUNTER % 2 == 1:
+                    keyboard.wait("p") # holds the program's execution until p is pressed
+
             # clear the queue that stores all the keys pressed/typed
             stddraw.clearKeysTyped()
 

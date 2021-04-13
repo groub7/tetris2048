@@ -28,13 +28,13 @@ class Tile:
     # Setter method for the position of the tile
     def set_position(self, position):
         # set the position of the tile as the given position
-        self.position = cp.copy(position)
+        self.position = cp.deepcopy(position)
 
         # Getter method for the position of the tile
 
     def get_position(self):
         # return the position of the tile
-        return cp.copy(self.position)
+        return cp.deepcopy(self.position)
 
         # Method for moving the tile by dx along the x axis and by dy along the y axis
 

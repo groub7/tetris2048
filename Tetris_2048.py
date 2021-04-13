@@ -41,8 +41,8 @@ def start():
 
     # display a simple menu before opening the game
     display_game_menu(grid_h, grid_w)
-    stddraw.setXscale(-0.5, grid_w + 2)
-    stddraw.setYscale(-0.5, grid_h + 2)
+    # stddraw.setXscale(-0.5, grid_w + 2)
+    # stddraw.setYscale(-0.5, grid_h + 2)
 
     # Start timer
     game_start_time = perf_counter()
@@ -121,7 +121,7 @@ def create_tetromino(grid_height, grid_width, grid):
     # type (shape) of the tetromino is determined randomly
     #tetromino_types = ['I', 'O', 'Z', 'S', 'L', 'J', 'T']
     # DEBUG VALUES
-    tetromino_types = ['L']
+    tetromino_types = ['I']
     random_index = random.randint(0, len(tetromino_types) - 1)
     random_type = tetromino_types[random_index]
     # create and return the tetromino

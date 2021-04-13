@@ -60,7 +60,7 @@ def start():
                 # (causes the tetromino to fall down faster)
                 current_tetromino.move(key_typed, grid)
             elif key_typed == "space":
-                for _ in range(20):
+                for _ in range(24):
                     current_tetromino.move('down', grid)
                     success = False # Don't allow for any movement after pressing space
             elif key_typed == "up":
@@ -74,6 +74,7 @@ def start():
                         break  # finishing the loop
             #restart
             elif key_typed == "v":
+                current_tetromino.clear_tetro(grid)
                 grid.clearEverything(grid_w, grid_h)
                 SCORE = 0
                 CLEARED = 0

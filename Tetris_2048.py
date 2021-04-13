@@ -5,15 +5,21 @@ from tetromino import Tetromino  # class for modeling the tetrominoes
 from picture import Picture  # used representing images to display
 import os  # used for file and directory operations
 from color import Color  # used for coloring the game menu
-import keyboard  # using module keyboard
+from time import perf_counter
+
 # MAIN FUNCTION OF THE PROGRAM
 # -------------------------------------------------------------------------------
 # Main function where this program starts execution
 SCORE = 0
+CLEARED = 0
 
 
 def start():
     global SCORE
+    global CLEARED
+    # Timer for block downfall
+    timer_start = -999
+    game_speed = 0.5  # In seconds
     # set the dimensions of the game grid
     grid_h, grid_w = 20, 12
     # set the size of the drawing canvas
@@ -33,6 +39,8 @@ def start():
     # display a simple menu before opening the game
     display_game_menu(grid_h, grid_w)
 
+    # Start timer
+    game_start_time = perf_counter()
     # main game loop (keyboard interaction for moving the tetromino)
     while True:
         # check user interactions via the keyboard
@@ -51,26 +59,23 @@ def start():
                 # move the tetromino down by one
                 # (causes the tetromino to fall down faster)
                 current_tetromino.move(key_typed, grid)
-
-            #instant drop
             elif key_typed == "space":
-                for _ in range(18):
+                for _ in range(20):
                     current_tetromino.move('down', grid)
-            #rotate
+                    success = False # Don't allow for any movement after pressing space
             elif key_typed == "up":
                 current_tetromino.rotate(grid)
-            #pause
+            # TODO pause function
             elif key_typed == "p":
-                while True:
-                    if keyboard.is_pressed('r'):  # if key 'q' is pressed
-                        print('Game Paused!')
-                        break  # finishing the loop
-
+                pass
             # clear the queue that stores all the keys pressed/typed
             stddraw.clearKeysTyped()
 
-        # move (drop) the tetromino down by 1 at each iteration
-        success = current_tetromino.move("down", grid)
+        # move (drop) the tetromino down by 1 after set amount of time
+        end_time = perf_counter()
+        if end_time - timer_start >= game_speed - CLEARED * 0.025:
+            success = current_tetromino.move("down", grid)
+            timer_start = perf_counter()
 
         # place the tetromino on the game grid when it cannot go down anymore
         if not success:
@@ -85,8 +90,12 @@ def start():
             # by using the create_tetromino function defined below
             current_tetromino = create_tetromino(grid_h, grid_w)
             grid.current_tetromino = current_tetromino
+            # After spawning move the block once and update success or instant game over
+            success = current_tetromino.move("down", grid)
+
         # TODO clear function's return type
-        SCORE = SCORE + grid.clear(grid_w, grid_h) * 100
+        CLEARED += grid.clear(grid_w, grid_h)
+        SCORE += CLEARED * 100
         # display the game grid and as well the current tetromino
         # grid.clear(grid_w, grid_h)
         grid.display()
@@ -95,7 +104,7 @@ def start():
 
 
 # Function for creating random shaped tetrominoes to enter the game grid
-def create_tetromino (grid_height, grid_width):
+def create_tetromino(grid_height, grid_width):
     # type (shape) of the tetromino is determined randomly
     # tetromino_types = ['I', 'O', 'Z', 'S', 'L', 'J', 'T']
     # DEBUG VALUES

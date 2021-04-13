@@ -139,3 +139,11 @@ class GameGrid:
                             self.tile_matrix[y][x] = None
         # Return the number of pushes, which is equal to the number of lines cleared at the end of the process
         return number_of_pushes
+
+    def clearEverything(self, row, col):
+        for y in range(col):
+            for x in range(row):
+                self.tile_matrix[y][x] = None
+
+
+

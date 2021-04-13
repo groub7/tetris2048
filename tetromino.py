@@ -228,5 +228,10 @@ class Tetromino:
         for coord in positions:
             if game_grid.is_occupied(coord.y, coord.x):
                 return False
-
+    def clear_tetro(self, game_grid):
+        n = len(self.tile_matrix)  # n = number of rows = number of columns
+        for row in range(n):
+            for col in range(n):
+                if self.tile_matrix[row][col] != None:
+                    self.tile_matrix[row][col] = None
         return True

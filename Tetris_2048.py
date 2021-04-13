@@ -7,17 +7,15 @@ import os  # used for file and directory operations
 from color import Color  # used for coloring the game menu
 from time import perf_counter
 import keyboard
-
 # MAIN FUNCTION OF THE PROGRAM
 # -------------------------------------------------------------------------------
 # Main function where this program starts execution
 SCORE = 0
 CLEARED = 0
-PAUSE_COUNTER = 0
 
 
 def start():
-    global SCORE, PAUSE_COUNTER
+    global SCORE
     global CLEARED
     # Timer for block downfall
     timer_start = -999
@@ -28,8 +26,8 @@ def start():
     canvas_h, canvas_w = 40 * grid_h, 40 * grid_w
     stddraw.setCanvasSize(canvas_w, canvas_h)
     # set the scale of the coordinate system
-    stddraw.setXscale(-0.5, grid_w - 0.5)
-    stddraw.setYscale(-0.5, grid_h - 0.5)
+    stddraw.setXscale(-2, grid_w + 0.5)
+    stddraw.setYscale(-2, grid_h + 0.5)
 
     # create the game grid
     grid = GameGrid(grid_h, grid_w)
@@ -40,8 +38,6 @@ def start():
 
     # display a simple menu before opening the game
     display_game_menu(grid_h, grid_w)
-    stddraw.setXscale(-0.5, grid_w + 2)
-    stddraw.setYscale(-0.5, grid_h + 2)
 
     # Start timer
     game_start_time = perf_counter()
@@ -64,17 +60,24 @@ def start():
                 # (causes the tetromino to fall down faster)
                 current_tetromino.move(key_typed, grid)
             elif key_typed == "space":
-                for _ in range(20):
+                for _ in range(24):
                     current_tetromino.move('down', grid)
                     success = False # Don't allow for any movement after pressing space
             elif key_typed == "up":
                 current_tetromino.rotate(grid)
-            # pause function
+            #pause
             elif key_typed == "p":
-                PAUSE_COUNTER = PAUSE_COUNTER + 1
-                if PAUSE_COUNTER % 2 == 1:
-                    keyboard.wait("p") # holds the program's execution until p is pressed
-
+                pass
+                while True:
+                    if keyboard.is_pressed('r'):  # if key 'q' is pressed
+                        print('Game Paused!')
+                        break  # finishing the loop
+            #restart
+            elif key_typed == "v":
+                current_tetromino.clear_tetro(grid)
+                grid.clearEverything(grid_w, grid_h)
+                SCORE = 0
+                CLEARED = 0
             # clear the queue that stores all the keys pressed/typed
             stddraw.clearKeysTyped()
 

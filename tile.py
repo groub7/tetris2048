@@ -10,7 +10,7 @@ class Tile:
     # Class attributes shared among all Tile objects
     # ---------------------------------------------------------------------------
     # value used for the thickness of the boxes (boundaries) around the tiles
-    boundary_thickness = 0.024 #0.004 to default
+    boundary_thickness = 0.004 #0.004 to default
     # font family and size used for displaying the tile number
     font_family, font_size = "Arial", 14
 
@@ -41,15 +41,17 @@ class Tile:
     def move(self, dx, dy):
         self.position.translate(dx, dy)
 
+    def set_number(self, num):
+        self.number = num
     # Method for drawing the tile
     def draw(self):
         # draw the tile as a filled square
         stddraw.setPenColor(self.background_color)
-        stddraw.filledSquare(self.position.x, self.position.y, 0.3) #0.5 to default
+        stddraw.filledSquare(self.position.x, self.position.y, 0.5) #0.5 to default
         # draw the bounding box of the tile as a square
         stddraw.setPenColor(self.boundary_color)
         stddraw.setPenRadius(Tile.boundary_thickness)
-        stddraw.square(self.position.x, self.position.y, 0.3) #0.5 to default
+        stddraw.square(self.position.x, self.position.y, 0.5) #0.5 to default
         stddraw.setPenRadius()  # reset the pen radius to its default value
         # draw the number on the tile
         stddraw.setPenColor(self.foreground_color)

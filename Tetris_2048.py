@@ -5,6 +5,7 @@ from tetromino import Tetromino  # class for modeling the tetrominoes
 from picture import Picture  # used representing images to display
 import os  # used for file and directory operations
 from color import Color  # used for coloring the game menu
+from time import perf_counter
 
 # MAIN FUNCTION OF THE PROGRAM
 # -------------------------------------------------------------------------------
@@ -14,6 +15,9 @@ SCORE = 0
 
 def start():
     global SCORE
+    # Timer for block downfall
+    timer_start = -999
+    game_speed = 0.5  # In seconds
     # set the dimensions of the game grid
     grid_h, grid_w = 20, 12
     # set the size of the drawing canvas
@@ -33,6 +37,8 @@ def start():
     # display a simple menu before opening the game
     display_game_menu(grid_h, grid_w)
 
+    # Difficulty timer
+    game_start_time = perf_counter()
     # main game loop (keyboard interaction for moving the tetromino)
     while True:
         # check user interactions via the keyboard
@@ -52,8 +58,9 @@ def start():
                 # (causes the tetromino to fall down faster)
                 current_tetromino.move(key_typed, grid)
             elif key_typed == "space":
-                for _ in range(18):
+                for _ in range(20):
                     current_tetromino.move('down', grid)
+                    success = False # Don't allow for any movement after pressing space
             elif key_typed == "up":
                 current_tetromino.rotate(grid)
             # TODO pause function
@@ -62,8 +69,11 @@ def start():
             # clear the queue that stores all the keys pressed/typed
             stddraw.clearKeysTyped()
 
-        # move (drop) the tetromino down by 1 at each iteration
-        success = current_tetromino.move("down", grid)
+        # move (drop) the tetromino down by 1 after set amount of time
+        end_time = perf_counter()
+        if end_time - timer_start >= game_speed:
+            success = current_tetromino.move("down", grid)
+            timer_start = perf_counter()
 
         # place the tetromino on the game grid when it cannot go down anymore
         if not success:
@@ -78,6 +88,9 @@ def start():
             # by using the create_tetromino function defined below
             current_tetromino = create_tetromino(grid_h, grid_w)
             grid.current_tetromino = current_tetromino
+            # After spawning move the block once and update success or instant game over
+            success = current_tetromino.move("down", grid)
+
         # TODO clear function's return type
         SCORE = SCORE + grid.clear(grid_w, grid_h) * 100
         # display the game grid and as well the current tetromino

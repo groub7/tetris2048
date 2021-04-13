@@ -6,7 +6,7 @@ from picture import Picture  # used representing images to display
 import os  # used for file and directory operations
 from color import Color  # used for coloring the game menu
 from time import perf_counter
-
+import keyboard
 # MAIN FUNCTION OF THE PROGRAM
 # -------------------------------------------------------------------------------
 # Main function where this program starts execution
@@ -65,9 +65,18 @@ def start():
                     success = False # Don't allow for any movement after pressing space
             elif key_typed == "up":
                 current_tetromino.rotate(grid)
-            # TODO pause function
+            #pause
             elif key_typed == "p":
                 pass
+                while True:
+                    if keyboard.is_pressed('r'):  # if key 'q' is pressed
+                        print('Game Paused!')
+                        break  # finishing the loop
+            #restart
+            elif key_typed == "v":
+                grid.clearEverything(grid_w, grid_h)
+                SCORE = 0
+                CLEARED = 0
             # clear the queue that stores all the keys pressed/typed
             stddraw.clearKeysTyped()
 

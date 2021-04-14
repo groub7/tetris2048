@@ -26,7 +26,7 @@ class GameGrid:
         self.box_thickness = 8 * self.line_thickness
 
     # Method used for displaying the game grid
-    def display(self):
+    def display(self, SCORE):
         # clear the background canvas to empty_cell_color
         stddraw.clear(self.empty_cell_color)
         # draw the game grid
@@ -37,6 +37,9 @@ class GameGrid:
         # draw a box around the game grid
         self.draw_boundaries()
         # show the resulting drawing with a pause duration = 250 ms
+
+        self.score(SCORE)
+
         stddraw.show(16.7)
 
     # Method for drawing the cells and the lines of the grid
@@ -145,5 +148,11 @@ class GameGrid:
             for x in range(row):
                 self.tile_matrix[y][x] = None
 
-
+    def score (self, SCORE):
+        text_color = Color(0, 0, 0)
+        stddraw.setFontFamily("Arial")
+        stddraw.setFontSize(25)
+        stddraw.setPenColor(text_color)
+        text_to_display = "Score: " + str(SCORE)
+        stddraw.text(1.2, self.grid_height + 0.5, text_to_display)
 

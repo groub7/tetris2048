@@ -41,8 +41,8 @@ def start():
 
     # display a simple menu before opening the game
     display_game_menu(grid_h, grid_w)
-    # stddraw.setXscale(-0.5, grid_w + 2)
-    # stddraw.setYscale(-0.5, grid_h + 2)
+    stddraw.setXscale(-0.5, grid_w + 2)
+    stddraw.setYscale(-0.5, grid_h + 2)
 
     # Start timer
     game_start_time = perf_counter()
@@ -108,10 +108,10 @@ def start():
             success = current_tetromino.move("down", grid)
 
         CLEARED += grid.clear(grid_w, grid_h)
-        SCORE += CLEARED * 100
+        SCORE = CLEARED * 100
         # display the game grid and as well the current tetromino
         # grid.clear(grid_w, grid_h)
-        grid.display()
+        grid.display(SCORE)
     print(SCORE)
     print("Game over")
 

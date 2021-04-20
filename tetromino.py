@@ -271,7 +271,7 @@ class Tetromino:
 
     def set_random_tile_numbers(self, game_grid):
         n = len(self.tile_matrix)  # n = number of rows = number of columns
-        tile_numbers = [2, 4]
+        tile_numbers = [2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048]
         for row in range(n):
             for col in range(n):
                 if self.tile_matrix[row][col] != None:

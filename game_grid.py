@@ -17,13 +17,14 @@ class GameGrid:
         # game_over flag shows whether the game is over/completed or not
         self.game_over = False
         # set the color used for the empty grid cells
-        self.empty_cell_color = Color(203, 194, 179)
+        # self.empty_cell_color = Color(203, 194, 179)
+        self.empty_cell_color = Color(213, 204, 199)
         # set the colors used for the grid lines and the grid boundaries
         self.line_color = Color(187, 173, 160)
         self.boundary_color = Color(187, 173, 160)
         # thickness values used for the grid lines and the grid boundaries
-        self.line_thickness = 0.002
-        self.box_thickness = 8 * self.line_thickness
+        self.line_thickness = 0.006
+        self.box_thickness = 2 * self.line_thickness
         self.ghost_tetromino = None
 
     # Method used for displaying the game grid
@@ -146,6 +147,9 @@ class GameGrid:
                             self.tile_matrix[y][x] = None
         # Return the number of pushes, which is equal to the number of lines cleared at the end of the process
         return number_of_pushes
+
+    def clear_2048(self, row, col):
+        return "bruh"
 
     def clearEverything(self, row, col):
         for y in range(col):

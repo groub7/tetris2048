@@ -76,7 +76,9 @@ class Tile:
         stddraw.square(self.position.x, self.position.y, 0.5) #0.5 to default
         stddraw.setPenRadius()  # reset the pen radius to its default value
         # draw the number on the tile
-        stddraw.setPenColor(Color(119, 112, 101))
+        stddraw.setPenColor(Color(255, 255, 255))
+        if self.get_number() <= 4:
+            stddraw.setPenColor(Color(119, 112, 101))
         stddraw.setFontFamily(Tile.font_family)
         stddraw.setFontSize(Tile.font_size)
-        stddraw.boldText(self.position.x, self.position.y, str(self.number))
+        stddraw.boldText(self.position.x, self.position.y, str(self.get_number()))

@@ -275,5 +275,5 @@ class Tetromino:
         for row in range(n):
             for col in range(n):
                 if self.tile_matrix[row][col] != None:
-                    random_num = random.randint(0, 1)
+                    random_num = random.randint(0, len(tile_numbers)-10)
                     self.tile_matrix[row][col].set_number(tile_numbers[random_num])

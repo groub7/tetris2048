@@ -148,12 +148,27 @@ class GameGrid:
         # Return the number of pushes, which is equal to the number of lines cleared at the end of the process
         return number_of_pushes
 
+    def clear_2048(self, row, col):
+        for y in range(col):
+            for x in range(row - 1):
+                if self.tile_matrix[y][x] != None and self.tile_matrix[y + 1][x] != None:
+                    if self.tile_matrix[y][x].get_number() == self.tile_matrix[y + 1][x].get_number():
+                        self.tile_matrix[y + 1][x] = None
+                        self.tile_matrix[y][x].set_number(self.tile_matrix[y][x].get_number() * 2)
+                        for i in range(y + 2, col - 1):
+                            if self.tile_matrix[i][x] != None:
+                                self.tile_matrix[i][x].move(0, -1)
+                                self.tile_matrix[i - 1][x] = self.tile_matrix[i][x]
+                                self.tile_matrix[i][x] = None
+                        self.clear_2048(row, col)
+                        return
+
     def clearEverything(self, row, col):
         for y in range(col):
             for x in range(row):
                 self.tile_matrix[y][x] = None
 
-    def score (self, SCORE):
+    def score(self, SCORE):
         text_color = Color(0, 0, 0)
         stddraw.setFontFamily("Arial")
         stddraw.setFontSize(25)

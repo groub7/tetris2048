@@ -106,6 +106,7 @@ def start():
                 # update the game grid by adding the tiles of the tetromino
                 game_over = grid.update_grid(tiles_to_place)
                 # end the main game loop if the game is over
+                grid.clear_2048(grid_w, grid_h)
                 if game_over:
                     break
                 # create the next tetromino to enter the game grid

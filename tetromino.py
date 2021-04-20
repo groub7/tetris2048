@@ -79,7 +79,7 @@ class Tetromino:
             self.tile_matrix[row_index][col_index] = Tile(position)
 
     # Method for drawing the tetromino on the game grid
-    def draw(self):
+    def draw(self, is_transparent=False):
         n = len(self.tile_matrix)  # n = number of rows = number of columns
         for row in range(n):
             for col in range(n):
@@ -89,7 +89,7 @@ class Tetromino:
                     # have tiles with position.y >= grid_height
                     position = self.tile_matrix[row][col].get_position()
                     if position.y < self.grid_height:
-                        self.tile_matrix[row][col].draw()
+                        self.tile_matrix[row][col].draw(is_transparent)
                         # Method for moving the tetromino in a given direction by 1 on the game grid
 
     def move(self, direction, game_grid):
@@ -175,8 +175,8 @@ class Tetromino:
 
     def rotate(self, game_grid):
         n = len(self.tile_matrix)  # n = number of rows = number of columns
-        if self.can_be_rotated(game_grid) == False:
-            return False
+        # if self.can_be_rotated(game_grid) == False:
+        #     return False
 
         # Push amount in case of overflow from edges.
         push_right_num = 0
@@ -199,10 +199,37 @@ class Tetromino:
                         push_left_num += 1
                     rotated_matrix[col][n - 1 - row].set_position(position)
 
-        should_copy = True
+        # Checking for collision with other tiles.
+        for row in range(n):
+            for col in range(n):
+                if rotated_matrix[row][col] != None:
+                    position = rotated_matrix[row][col].get_position()
+                    # If this is an I tetromino
+                    if n == 4:
+                        # if rotated_matrix[2][0] != None or rotated_matrix[1][0] != None:
+                        if game_grid.is_occupied(position.y, position.x):
+                            if col == 0:
+                                push_right_num = 1
+                            if col == 1:
+                                push_right_num = 2
+                                break
+                            if col == 2:
+                                push_left_num = 2
+                                break
+                            if col == 3:
+                                push_left_num = 1
+                    # If this is any other tetromino
+                    else:
+                        if game_grid.is_occupied(position.y, position.x):
+                            if col == 0:
+                                push_right_num = 1
+                            if col == 2:
+                                push_left_num = 1
+
+        should_copy = not (push_right_num > 0 and push_left_num > 0)
         # Updating the tile matrix of the tetromino with the rotated one
         self.tile_matrix = rotated_matrix
-        if push_left_num + push_right_num > 0:  # If there is overflow
+        if push_left_num + push_right_num > 0 and should_copy:  # If there is overflow
             for i in range(push_right_num):     # Push to the right
                 if not self.move("right", game_grid):
                     should_copy = False

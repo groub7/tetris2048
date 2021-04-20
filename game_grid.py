@@ -24,6 +24,7 @@ class GameGrid:
         # thickness values used for the grid lines and the grid boundaries
         self.line_thickness = 0.002
         self.box_thickness = 8 * self.line_thickness
+        self.ghost_tetromino = None
 
     # Method used for displaying the game grid
     def display(self, SCORE):
@@ -31,6 +32,9 @@ class GameGrid:
         stddraw.clear(self.empty_cell_color)
         # draw the game grid
         self.draw_grid()
+        # Draw the ghost guide
+        if self.ghost_tetromino is not None:
+            self.ghost_tetromino.draw(True)
         # draw the current (active) tetromino
         if self.current_tetromino is not None:
             self.current_tetromino.draw()

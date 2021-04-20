@@ -8,6 +8,8 @@ from color import Color  # used for coloring the game menu
 from time import perf_counter
 import keyboard
 import time
+import copy as cp
+
 # MAIN FUNCTION OF THE PROGRAM
 # -------------------------------------------------------------------------------
 # Main function where this program starts execution
@@ -67,9 +69,10 @@ def start():
             elif key_typed == "space":
                 for _ in range(24):
                     current_tetromino.move('down', grid)
-                    success = False # Don't allow for any movement after pressing space
+                    success = False  # Don't allow for any movement after pressing space
             elif key_typed == "up":
                 current_tetromino.rotate(grid)
+
             #pause
             elif key_typed == "p":
                 PAUSE_COUNTER = PAUSE_COUNTER + 1
@@ -82,8 +85,14 @@ def start():
                 grid.clearEverything(grid_w, grid_h)
                 SCORE = 0
                 CLEARED = 0
+
             # clear the queue that stores all the keys pressed/typed
             stddraw.clearKeysTyped()
+
+        # Ghost Guide
+        grid.ghost_tetromino = cp.deepcopy(current_tetromino)
+        for i in range(24):
+            grid.ghost_tetromino.move("down", grid)
 
         # move (drop) the tetromino down by 1 after set amount of time
         end_time = perf_counter()
@@ -119,9 +128,9 @@ def start():
 # Function for creating random shaped tetrominoes to enter the game grid
 def create_tetromino(grid_height, grid_width, grid):
     # type (shape) of the tetromino is determined randomly
-    #tetromino_types = ['I', 'O', 'Z', 'S', 'L', 'J', 'T']
+    tetromino_types = ['I', 'O', 'Z', 'S', 'L', 'J', 'T']
     # DEBUG VALUES
-    tetromino_types = ['I']
+    # tetromino_types = ['I']
     random_index = random.randint(0, len(tetromino_types) - 1)
     random_type = tetromino_types[random_index]
     # create and return the tetromino

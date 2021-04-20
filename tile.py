@@ -43,8 +43,13 @@ class Tile:
 
     def set_number(self, num):
         self.number = num
+
     # Method for drawing the tile
-    def draw(self):
+    def draw(self, is_transparent=False):
+        if is_transparent:
+            self.background_color = Color(75, 90, 100)  # background (tile) color
+            self.foreground_color = Color(0, 50, 100)  # foreground (number) color
+            self.boundary_color = Color(0, 50, 100)  # boundary (box) color
         # draw the tile as a filled square
         stddraw.setPenColor(self.background_color)
         stddraw.filledSquare(self.position.x, self.position.y, 0.5) #0.5 to default

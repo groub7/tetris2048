@@ -46,82 +46,94 @@ def start():
     stddraw.setXscale(-0.5, grid_w + 2)
     stddraw.setYscale(-0.5, grid_h + 2)
 
-    # Start timer
-    game_start_time = perf_counter()
-    # main game loop (keyboard interaction for moving the tetromino)
     while True:
-        # check user interactions via the keyboard
-        if stddraw.hasNextKeyTyped():
-            key_typed = stddraw.nextKeyTyped()
-            # if the left arrow key has been pressed
-            if key_typed == "left":
-                # move the tetromino left by one
-                current_tetromino.move(key_typed, grid)
-                # if the right arrow key has been pressed
-            elif key_typed == "right":
-                # move the tetromino right by one
-                current_tetromino.move(key_typed, grid)
-            # if the down arrow key has been pressed
-            elif key_typed == "down":
-                # move the tetromino down by one
-                # (causes the tetromino to fall down faster)
-                current_tetromino.move(key_typed, grid)
-            elif key_typed == "space":
-                for _ in range(24):
-                    current_tetromino.move('down', grid)
-                    success = False  # Don't allow for any movement after pressing space
-            elif key_typed == "up":
-                current_tetromino.rotate(grid)
+        while True:
+            # check user interactions via the keyboard
+            if stddraw.hasNextKeyTyped():
+                key_typed = stddraw.nextKeyTyped()
+                # if the left arrow key has been pressed
+                if key_typed == "left":
+                    # move the tetromino left by one
+                    current_tetromino.move(key_typed, grid)
+                    # if the right arrow key has been pressed
+                elif key_typed == "right":
+                    # move the tetromino right by one
+                    current_tetromino.move(key_typed, grid)
+                # if the down arrow key has been pressed
+                elif key_typed == "down":
+                    # move the tetromino down by one
+                    # (causes the tetromino to fall down faster)
+                    current_tetromino.move(key_typed, grid)
+                elif key_typed == "space":
+                    for _ in range(24):
+                        current_tetromino.move('down', grid)
+                        success = False  # Don't allow for any movement after pressing space
+                elif key_typed == "up":
+                    current_tetromino.rotate(grid)
 
-            #pause
-            elif key_typed == "p":
-                PAUSE_COUNTER = PAUSE_COUNTER + 1
-                if PAUSE_COUNTER % 2 == 1:
-                    keyboard.wait("p")
+                # pause
+                elif key_typed == "p":
+                    PAUSE_COUNTER = PAUSE_COUNTER + 1
+                    if PAUSE_COUNTER % 2 == 1:
+                        keyboard.wait("p")
 
-            #restart
-            elif key_typed == "r":
-                current_tetromino.clear_tetro(grid)
-                grid.clearEverything(grid_w, grid_h)
-                SCORE = 0
-                CLEARED = 0
-                success = False
+                # restart
+                elif key_typed == "r":
+                    current_tetromino.clear_tetro(grid)
+                    grid.clearEverything(grid_w, grid_h)
+                    SCORE = 0
+                    CLEARED = 0
+                    success = False
 
-            # clear the queue that stores all the keys pressed/typed
-            stddraw.clearKeysTyped()
+                # clear the queue that stores all the keys pressed/typed
+                stddraw.clearKeysTyped()
 
-        # Ghost Guide
-        grid.ghost_tetromino = cp.deepcopy(current_tetromino)
-        for i in range(24):
-            grid.ghost_tetromino.move("down", grid)
+            # Ghost Guide
+            grid.ghost_tetromino = cp.deepcopy(current_tetromino)
+            for i in range(24):
+                grid.ghost_tetromino.move("down", grid)
 
-        # move (drop) the tetromino down by 1 after set amount of time
-        end_time = perf_counter()
-        if end_time - timer_start >= game_speed - CLEARED * 0.025:
-            success = current_tetromino.move("down", grid)
-            timer_start = perf_counter()
+            # move (drop) the tetromino down by 1 after set amount of time
+            end_time = perf_counter()
+            if end_time - timer_start >= game_speed - CLEARED * 0.025:
+                success = current_tetromino.move("down", grid)
+                timer_start = perf_counter()
 
-        # place the tetromino on the game grid when it cannot go down anymore
-        if not success:
-            # get the tile matrix of the tetromino
-            tiles_to_place = current_tetromino.tile_matrix
-            # update the game grid by adding the tiles of the tetromino
-            game_over = grid.update_grid(tiles_to_place)
-            # end the main game loop if the game is over
-            if game_over:
-                break
-            # create the next tetromino to enter the game grid
-            # by using the create_tetromino function defined below
+            # place the tetromino on the game grid when it cannot go down anymore
+            if not success:
+                # get the tile matrix of the tetromino
+                tiles_to_place = current_tetromino.tile_matrix
+                # update the game grid by adding the tiles of the tetromino
+                game_over = grid.update_grid(tiles_to_place)
+                # end the main game loop if the game is over
+                if game_over:
+                    break
+                # create the next tetromino to enter the game grid
+                # by using the create_tetromino function defined below
+                current_tetromino = create_tetromino(grid_h, grid_w, grid)
+                grid.current_tetromino = current_tetromino
+                # After spawning move the block once and update success or instant game over
+                success = current_tetromino.move("down", grid)
+
+            CLEARED += grid.clear(grid_w, grid_h)
+            SCORE = CLEARED * 100
+            # display the game grid and as well the current tetromino
+            # grid.clear(grid_w, grid_h)
+            grid.display(SCORE)
+        # main game loop (keyboard interaction for moving the tetromino)
+        if keyboard.is_pressed("y"):
+            current_tetromino.clear_tetro(grid)
+            grid.clearEverything(grid_w, grid_h)
+            SCORE = 0
+            CLEARED = 0
+            grid = GameGrid(grid_h, grid_w)
             current_tetromino = create_tetromino(grid_h, grid_w, grid)
             grid.current_tetromino = current_tetromino
-            # After spawning move the block once and update success or instant game over
             success = current_tetromino.move("down", grid)
 
-        CLEARED += grid.clear(grid_w, grid_h)
-        SCORE = CLEARED * 100
-        # display the game grid and as well the current tetromino
-        # grid.clear(grid_w, grid_h)
-        grid.display(SCORE)
+        elif keyboard.is_pressed("n"):
+            break
+
     print(SCORE)
     print("Game over")
 

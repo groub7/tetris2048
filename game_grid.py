@@ -150,7 +150,7 @@ class GameGrid:
 
     def clear_2048(self, row, col):
         for y in range(col):
-            for x in range(row - 1):
+            for x in range(row):
                 if self.tile_matrix[y][x] != None and self.tile_matrix[y + 1][x] != None:
                     if self.tile_matrix[y][x].get_number() == self.tile_matrix[y + 1][x].get_number():
                         self.tile_matrix[y + 1][x] = None

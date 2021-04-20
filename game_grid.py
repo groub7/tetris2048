@@ -148,9 +148,6 @@ class GameGrid:
         # Return the number of pushes, which is equal to the number of lines cleared at the end of the process
         return number_of_pushes
 
-    def clear_2048(self, row, col):
-        return "bruh"
-
     def clearEverything(self, row, col):
         for y in range(col):
             for x in range(row):

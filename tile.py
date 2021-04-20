@@ -64,17 +64,20 @@ class Tile:
     # Method for drawing the tile
     def draw(self, is_transparent=False):
         if is_transparent:
-            self.background_color = Color(75, 90, 100)  # background (tile) color
-            self.foreground_color = Color(0, 50, 100)  # foreground (number) color
-            self.boundary_color = Color(95, 85, 80)  # boundary (box) color
+            self.boundary_color = Color(0, 0, 0)  # boundary (box) color
+            stddraw.setPenColor(self.boundary_color)
+            stddraw.setPenRadius(Tile.boundary_thickness)
+            stddraw.square(self.position.x, self.position.y, 0.5) #0.5 to default
+            stddraw.setPenRadius()  # reset the pen radius to its default value
+            return
         # draw the tile as a filled square
         stddraw.setPenColor(self.colors[int(math.log2(self.get_number() - 1))])
         stddraw.filledSquare(self.position.x, self.position.y, 0.5) #0.5 to default
         # draw the bounding box of the tile as a square
         stddraw.setPenColor(self.boundary_color)
         stddraw.setPenRadius(Tile.boundary_thickness)
-        stddraw.square(self.position.x, self.position.y, 0.5) #0.5 to default
-        stddraw.setPenRadius()  # reset the pen radius to its default value
+        stddraw.square(self.position.x, self.position.y, 0.5)  # 0.5 to default
+        stddraw.setPenRadius()
         # draw the number on the tile
         stddraw.setPenColor(Color(255, 255, 255))
         if self.get_number() <= 4:

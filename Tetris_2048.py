@@ -85,6 +85,7 @@ def start():
                 grid.clearEverything(grid_w, grid_h)
                 SCORE = 0
                 CLEARED = 0
+                success = False
 
             # clear the queue that stores all the keys pressed/typed
             stddraw.clearKeysTyped()

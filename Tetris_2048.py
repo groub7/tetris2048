@@ -80,7 +80,7 @@ def start():
                 # restart
                 elif key_typed == "r":
                     current_tetromino.clear_tetro(grid)
-                    grid.clearEverything(grid_w, grid_h)
+                    grid.clear_everything(grid_w, grid_h)
                     SCORE = 0
                     CLEARED = 0
                     success = False
@@ -107,6 +107,7 @@ def start():
                 game_over = grid.update_grid(tiles_to_place)
                 # end the main game loop if the game is over
                 grid.clear_2048(grid_w, grid_h)
+                grid.delete_alone(grid_w, grid_h)
                 if game_over:
                     break
                 # create the next tetromino to enter the game grid
@@ -124,7 +125,7 @@ def start():
         # main game loop (keyboard interaction for moving the tetromino)
         if keyboard.is_pressed("y"):
             current_tetromino.clear_tetro(grid)
-            grid.clearEverything(grid_w, grid_h)
+            grid.clear_everything(grid_w, grid_h)
             SCORE = 0
             CLEARED = 0
             grid = GameGrid(grid_h, grid_w)

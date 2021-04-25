@@ -179,6 +179,7 @@ class GameGrid:
 
     # If there is a tile that doesn't have any 4-connected neighbours, delete the tile
     def delete_alone(self, row, col):
+        to_add = 0
         for y in range(col - 1):
             for x in range(row):
                 if self.tile_matrix[y][x] != None:
@@ -186,21 +187,25 @@ class GameGrid:
                         if x == 11:  # if the tile is at the righmost place, don't look for the right neighbour
                             if self.tile_matrix[y + 1][x] == None and self.tile_matrix[y - 1][x] == None and \
                                     self.tile_matrix[y][x - 1] == None:
+                                to_add += int(self.tile_matrix[y][x].get_number())
                                 self.tile_matrix[y][x] = None
                         elif x == 0:  # if the tile is at the leftmost place, don't look dot the left neighnour
                             if self.tile_matrix[y + 1][x] == None and self.tile_matrix[y - 1][x] == None and \
                                     self.tile_matrix[y][x + 1] == None:
+                                to_add += int(self.tile_matrix[y][x].get_number())
                                 self.tile_matrix[y][x] = None
                         # belki lazım olur
                         elif y == 19:
                             if self.tile_matrix[y-1][x] == None and self.tile_matrix[y][x+1] == None and self.tile_matrix[y][x-1] == None:
+                                to_add += int(self.tile_matrix[y][x].get_number())
                                 self.tile_matrix[y][x] = None
 
                         else:  # if the tile is not at the rightmost or leftmost place, look for, up, down, lef and right neighbours
                             if self.tile_matrix[y + 1][x] == None and self.tile_matrix[y - 1][x] == None and \
                                     self.tile_matrix[y][x + 1] == None and self.tile_matrix[y][x - 1] == None:
+                                to_add += int(self.tile_matrix[y][x].get_number())
                                 self.tile_matrix[y][x] = None
-
+        return to_add
     def clear_everything(self, row, col):
         for y in range(col):
             for x in range(row):

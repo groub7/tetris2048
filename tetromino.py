@@ -4,6 +4,7 @@ from point import Point  # used for tile positions
 import numpy as np  # fundamental Python module for scientific computing
 import copy as cp
 
+
 class Tetromino:
     # Constructor to create a tetromino with a given type (shape)
     def __init__(self, type, grid_height, grid_width):
@@ -230,10 +231,10 @@ class Tetromino:
         # Updating the tile matrix of the tetromino with the rotated one
         self.tile_matrix = rotated_matrix
         if push_left_num + push_right_num > 0 and should_copy:  # If there is overflow
-            for i in range(push_right_num):     # Push to the right
+            for i in range(push_right_num):  # Push to the right
                 if not self.move("right", game_grid):
                     should_copy = False
-            for i in range(push_left_num):      # Push to the left
+            for i in range(push_left_num):  # Push to the left
                 if not self.move("left", game_grid):
                     should_copy = False
         if not should_copy:
@@ -275,5 +276,5 @@ class Tetromino:
         for row in range(n):
             for col in range(n):
                 if self.tile_matrix[row][col] != None:
-                    random_num = random.randint(0, len(tile_numbers)-10)
+                    random_num = random.randint(0, len(tile_numbers) - 10)
                     self.tile_matrix[row][col].set_number(tile_numbers[random_num])

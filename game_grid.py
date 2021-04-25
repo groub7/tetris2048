@@ -1,6 +1,7 @@
 import stddraw  # the stddraw module is used as a basic graphics library
 from color import Color  # used for coloring the game grid
 import numpy as np  # fundamental Python module for scientific computing
+import copy as cp
 
 
 # Class used for modelling the game grid
@@ -121,6 +122,8 @@ class GameGrid:
     def clear(self, row, col):
         number_of_pushes = 0
         has_clearing_started = False  # If there is a full line this frame, then the clearing process is started.
+        tile_matrix_before_clear = cp.deepcopy(self.tile_matrix)
+        rows_to_clear = []
         # Going through the rows from bottom to top.
         for y in range(col):
             is_full = False
@@ -136,6 +139,7 @@ class GameGrid:
             if has_clearing_started:
                 if is_full:
                     number_of_pushes += 1
+                    rows_to_clear.append(y)
                     for x in range(row):  # Going through each tile from left to right
                         self.tile_matrix[y][x] = None
                 else:
@@ -145,6 +149,8 @@ class GameGrid:
                             self.tile_matrix[y][x].position.y -= number_of_pushes
                             self.tile_matrix[y - number_of_pushes][x] = self.tile_matrix[y][x]
                             self.tile_matrix[y][x] = None
+        if number_of_pushes > 0:
+            self.clear_effect(tile_matrix_before_clear, rows_to_clear)
         # Return the number of pushes, which is equal to the number of lines cleared at the end of the process
         return number_of_pushes
 
@@ -162,27 +168,31 @@ class GameGrid:
                                 self.tile_matrix[i][x] = None
                         self.clear_2048(row, col)
                         return
-    #If there is a tile that doesn't have any 4-connected neighbours, delete the tile
+
+    # If there is a tile that doesn't have any 4-connected neighbours, delete the tile
     def delete_alone(self, row, col):
         for y in range(col):
             for x in range(row):
                 if self.tile_matrix[y][x] != None:
-                    if y > 0: #if the tile doesn't touch the bottommost place
-                        if x == 11: #if the tile is at the righmost place, don't look for the right neighbour
-                            if self.tile_matrix[y+1][x] == None and self.tile_matrix[y-1][x] == None and self.tile_matrix[y][x-1] == None:
+                    if y > 0:  # if the tile doesn't touch the bottommost place
+                        if x == 11:  # if the tile is at the righmost place, don't look for the right neighbour
+                            if self.tile_matrix[y + 1][x] == None and self.tile_matrix[y - 1][x] == None and \
+                                    self.tile_matrix[y][x - 1] == None:
                                 self.tile_matrix[y][x] = None
-                        elif x == 0: #if the tile is at the leftmost place, don't look dot the left neighnour
-                            if self.tile_matrix[y+1][x] == None and self.tile_matrix[y-1][x] == None and self.tile_matrix[y][x+1] == None:
+                        elif x == 0:  # if the tile is at the leftmost place, don't look dot the left neighnour
+                            if self.tile_matrix[y + 1][x] == None and self.tile_matrix[y - 1][x] == None and \
+                                    self.tile_matrix[y][x + 1] == None:
                                 self.tile_matrix[y][x] = None
-                        #bence bu commentli kısım lazım değil ama bir bug çıkarsa uncomment yapıp deneriz
+                        # bence bu commentli kısım lazım değil ama bir bug çıkarsa uncomment yapıp deneriz
                         # elif y == 19:
                         #     if self.tile_matrix[y-1][x] == None and self.tile_matrix[y][x+1] == None and self.tile_matrix[y][x-1] == None:
                         #         self.tile_matrix[y][x] = None
                         # elif y == 0:
                         #     if self.tile_matrix[y + 1][x] == None and self.tile_matrix[y][x + 1] == None and self.tile_matrix[y][x - 1] == None:
                         #         self.tile_matrix[y][x] = None
-                        else: #if the tile is not at the rightmost or leftmost place, look for, up, down, lef and right neighbours
-                            if self.tile_matrix[y+1][x] == None and self.tile_matrix[y-1][x] == None and self.tile_matrix[y][x+1] == None and self.tile_matrix[y][x-1] == None:
+                        else:  # if the tile is not at the rightmost or leftmost place, look for, up, down, lef and right neighbours
+                            if self.tile_matrix[y + 1][x] == None and self.tile_matrix[y - 1][x] == None and \
+                                    self.tile_matrix[y][x + 1] == None and self.tile_matrix[y][x - 1] == None:
                                 self.tile_matrix[y][x] = None
 
     def clear_everything(self, row, col):
@@ -198,3 +208,11 @@ class GameGrid:
         text_to_display = "Score: " + str(SCORE)
         stddraw.text(1.2, self.grid_height + 0.5, text_to_display)
 
+    def clear_effect(self, tile_matrix_before_clear, rows_to_clear):
+        for y in range(self.grid_height):
+            for x in range(self.grid_width):
+                if tile_matrix_before_clear[y][x] is not None:
+                    tile_matrix_before_clear[y][x].draw()
+                    if y in rows_to_clear:
+                        tile_matrix_before_clear[y][x].draw(is_cleared=True)
+        stddraw.show(250)

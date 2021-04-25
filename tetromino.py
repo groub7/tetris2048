@@ -7,7 +7,7 @@ import copy as cp
 
 class Tetromino:
     # Constructor to create a tetromino with a given type (shape)
-    def __init__ (self, type, grid_height, grid_width):
+    def __init__(self, type, grid_height, grid_width):
         # set grid_height and grid_width from input parameters
         self.grid_height = grid_height
         self.grid_width = grid_width
@@ -80,7 +80,7 @@ class Tetromino:
             self.tile_matrix[row_index][col_index] = Tile(position)
 
     # Method for drawing the tetromino on the game grid
-    def draw (self, is_transparent=False):
+    def draw(self, is_transparent=False):
         n = len(self.tile_matrix)  # n = number of rows = number of columns
         for row in range(n):
             for col in range(n):
@@ -93,7 +93,7 @@ class Tetromino:
                         self.tile_matrix[row][col].draw(is_transparent)
                         # Method for moving the tetromino in a given direction by 1 on the game grid
 
-    def move (self, direction, game_grid):
+    def move(self, direction, game_grid):
         # check if the tetromino can be moved in the given direction by using the
         # can_be_moved method defined below
         if not (self.can_be_moved(direction, game_grid)):
@@ -119,7 +119,7 @@ class Tetromino:
         return True  # successful move in the given direction
 
     # Method to check if the tetromino can be moved in the given direction or not
-    def can_be_moved (self, dir, game_grid):
+    def can_be_moved(self, dir, game_grid):
         n = len(self.tile_matrix)  # n = number of rows = number of columns
         if dir == "left" or dir == "right":
             for row in range(n):
@@ -174,11 +174,8 @@ class Tetromino:
                         break  # end the inner for loop
         return True  # tetromino can be moved in the given direction
 
-    def rotate (self, game_grid):
+    def rotate(self, game_grid):
         n = len(self.tile_matrix)  # n = number of rows = number of columns
-        # if self.can_be_rotated(game_grid) == False:
-        #     return False
-
         # Push amount in case of overflow from edges.
         push_right_num = 0
         push_left_num = 0
@@ -226,7 +223,8 @@ class Tetromino:
                                 push_right_num = 1
                             if col == 2:
                                 push_left_num = 1
-
+        if self.can_be_rotated(game_grid) is False and push_left_num == 0 and push_right_num == 0:
+            return False
         should_copy = not (push_right_num > 0 and push_left_num > 0)
         # Updating the tile matrix of the tetromino with the rotated one
         self.tile_matrix = rotated_matrix
@@ -242,7 +240,7 @@ class Tetromino:
         return True
 
     # Check if the tetromino can be rotated
-    def can_be_rotated (self, game_grid):
+    def can_be_rotated(self, game_grid):
         n = len(self.tile_matrix)  # n = number of rows = number of columns
         rotated_matrix = np.full((n, n), None)
         positions = []
@@ -262,7 +260,7 @@ class Tetromino:
             if game_grid.is_occupied(coord.y, coord.x):
                 return False
 
-    def clear_tetro (self, game_grid):
+    def clear_tetro(self, game_grid):
         n = len(self.tile_matrix)  # n = number of rows = number of columns
         for row in range(n):
             for col in range(n):
@@ -270,7 +268,7 @@ class Tetromino:
                     self.tile_matrix[row][col] = None
         return True
 
-    def set_random_tile_numbers (self, game_grid):
+    def set_random_tile_numbers(self, game_grid):
         n = len(self.tile_matrix)  # n = number of rows = number of columns
         tile_numbers = [2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048]
         for row in range(n):

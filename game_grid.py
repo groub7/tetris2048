@@ -6,8 +6,6 @@ import copy as cp
 
 # Class used for modelling the game grid
 class GameGrid:
-    scr = 0
-
     # Constructor for creating the game grid based on the given arguments
     def __init__(self, grid_h, grid_w):
         # set the dimensions of the game grid as the given arguments
@@ -29,6 +27,7 @@ class GameGrid:
         self.line_thickness = 0.006
         self.box_thickness = 2 * self.line_thickness
         self.ghost_tetromino = None
+        self.scr = 0
 
     # Method used for displaying the game grid
     def display(self, SCORE, game_over=False, paused=False, draw_current=True):

@@ -213,8 +213,10 @@ class GameGrid:
         stddraw.setFontFamily("Arial")
         stddraw.setFontSize(25)
         stddraw.setPenColor(text_color)
-        text_to_display = "Score: " + str(SCORE)
-        stddraw.text(1.2, self.grid_height + 0.5, text_to_display)
+        text_to_display = "Score"
+        stddraw.text(self.grid_width + 0.5, self.grid_height - 1.1, text_to_display)
+        text_to_score = str(SCORE).rjust(3)
+        stddraw.text(self.grid_width + 0.22, self.grid_height - 1.7, text_to_score)
 
     def clear_effect (self, tile_matrix_before_clear, rows_to_clear):
         for y in range(self.grid_height):
@@ -242,11 +244,11 @@ class GameGrid:
     def next_piece_box (self):
         text_color = Color(0, 0, 0)
         stddraw.setPenColor(text_color)
-        stddraw.rectangle(self.grid_width - 0.5, self.grid_height - 5, 2.5, 2.5)
+        stddraw.rectangle(self.grid_width - 0.5, 3, 2.5, 2.5)
         text_to_display = "Next "
-        stddraw.text(self.grid_width + 0.25, self.grid_height - 1.2, text_to_display)
+        stddraw.text(self.grid_width + 0.25, 5, text_to_display)
         text_to_display = "Piece: "
-        stddraw.text(self.grid_width + 0.41, self.grid_height - 2, text_to_display)
+        stddraw.text(self.grid_width + 0.41, 4, text_to_display)
 
     # game over splash screen
     def paused (self):

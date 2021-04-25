@@ -52,7 +52,7 @@ def start ():
     # display a simple menu before opening the game
     display_game_menu(grid_h, grid_w)
     stddraw.setXscale(-0.5, grid_w + 2)
-    stddraw.setYscale(-0.5, grid_h + 2)
+    stddraw.setYscale(-0.5, grid_h - 0.5)
 
     while True:
         while not GAME_OVER:  # main game

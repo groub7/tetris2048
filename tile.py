@@ -29,7 +29,7 @@ class Tile:
     ]
 
     # Constructor that creates a tile at a given position with 2 as its number
-    def __init__ (self, position=Point(0, 0)):  # (0, 0) is the default position
+    def __init__(self, position=Point(0, 0)):  # (0, 0) is the default position
         # assign the number on the tile
         self.number = 2
         # set the colors of the tile
@@ -40,29 +40,29 @@ class Tile:
         self.position = Point(position.x, position.y)
 
     # Setter method for the position of the tile
-    def set_position (self, position):
+    def set_position(self, position):
         # set the position of the tile as the given position
         self.position = cp.deepcopy(position)
 
         # Getter method for the position of the tile
 
-    def get_position (self):
+    def get_position(self):
         # return the position of the tile
         return cp.deepcopy(self.position)
 
         # Method for moving the tile by dx along the x axis and by dy along the y axis
 
-    def move (self, dx, dy):
+    def move(self, dx, dy):
         self.position.translate(dx, dy)
 
-    def set_number (self, num):
+    def set_number(self, num):
         self.number = num
 
-    def get_number (self):
+    def get_number(self):
         return self.number
 
     # Method for drawing the tile
-    def draw (self, is_transparent=False, is_cleared=False):
+    def draw(self, is_transparent=False, is_cleared=False):
         if is_transparent:
             self.boundary_color = Color(0, 0, 0)  # boundary (box) color
             stddraw.setPenColor(self.boundary_color)
@@ -74,7 +74,7 @@ class Tile:
             self.boundary_color = Color(255, 255, 255)  # clear color
             stddraw.setPenColor(self.boundary_color)
             stddraw.setPenRadius(Tile.boundary_thickness)
-            stddraw.filledSquare(self.position.x, self.position.y, 0.55)  # 0.5 to default
+            stddraw.filledSquare(self.position.x, self.position.y, 0.525)  # 0.5 to default
             stddraw.setPenRadius()  # reset the pen radius to its default value
             return
         # draw the tile as a filled square

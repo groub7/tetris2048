@@ -29,7 +29,7 @@ class GameGrid:
         self.ghost_tetromino = None
 
     # Method used for displaying the game grid
-    def display(self, SCORE):
+    def display(self, SCORE, game_over=False, paused=False):
         # clear the background canvas to empty_cell_color
         stddraw.clear(self.empty_cell_color)
         # draw the game grid
@@ -45,7 +45,12 @@ class GameGrid:
         # show the resulting drawing with a pause duration = 250 ms
 
         self.score(SCORE)
-
+        self.next_piece_box()
+        # if game over, print game over screen
+        if game_over:
+            self.game_over_screen()
+        if paused:
+            self.paused()
         stddraw.show(16.7)
 
     # Method for drawing the cells and the lines of the grid
@@ -155,23 +160,26 @@ class GameGrid:
         return number_of_pushes
 
     def clear_2048(self, row, col):
-        for y in range(col):
+        counter = 0
+        for y in range(col - 1):
             for x in range(row):
                 if self.tile_matrix[y][x] != None and self.tile_matrix[y + 1][x] != None:
                     if self.tile_matrix[y][x].get_number() == self.tile_matrix[y + 1][x].get_number():
                         self.tile_matrix[y + 1][x] = None
-                        self.tile_matrix[y][x].set_number(self.tile_matrix[y][x].get_number() * 2)
+                        self.tile_matrix[y][x].set_number(self.tile_matrix[y][x].get_number() << 1)
+                        counter += self.tile_matrix[y][x].get_number()
                         for i in range(y + 2, col - 1):
                             if self.tile_matrix[i][x] != None:
                                 self.tile_matrix[i][x].move(0, -1)
                                 self.tile_matrix[i - 1][x] = self.tile_matrix[i][x]
                                 self.tile_matrix[i][x] = None
                         self.clear_2048(row, col)
-                        return
+                        return counter
+        return 0
 
     # If there is a tile that doesn't have any 4-connected neighbours, delete the tile
     def delete_alone(self, row, col):
-        for y in range(col):
+        for y in range(col - 1):
             for x in range(row):
                 if self.tile_matrix[y][x] != None:
                     if y > 0:  # if the tile doesn't touch the bottommost place
@@ -216,3 +224,35 @@ class GameGrid:
                     if y in rows_to_clear:
                         tile_matrix_before_clear[y][x].draw(is_cleared=True)
         stddraw.show(250)
+
+    # game over splash screen
+    def game_over_screen(self):
+        text_color = Color(0, 0, 0)
+        stddraw.setFontFamily("Arial")
+        stddraw.setFontSize(30)
+        stddraw.setPenColor(text_color)
+        text_to_display = "GAME OVER"
+        stddraw.text(self.grid_width / 2, self.grid_height / 2, text_to_display)
+        text_to_continue = "To continue press y"
+        stddraw.text(self.grid_width / 2, self.grid_height / 2 - 1, text_to_continue)
+        text_to_not_continue = "To exit press n"
+        stddraw.text(self.grid_width / 2, self.grid_height / 2 - 2, text_to_not_continue)
+
+    # box for next piece
+    def next_piece_box(self):
+        text_color = Color(0, 0, 0)
+        stddraw.setPenColor(text_color)
+        stddraw.rectangle(self.grid_width - 0.5, self.grid_height - 5, 2.5, 2.5)
+        text_to_display = "Next "
+        stddraw.text(self.grid_width + 0.25, self.grid_height - 1.2, text_to_display)
+        text_to_display = "Piece: "
+        stddraw.text(self.grid_width + 0.41, self.grid_height - 2, text_to_display)
+
+        # game over splash screen
+    def paused (self):
+        text_color = Color(0, 0, 0)
+        stddraw.setFontFamily("Arial")
+        stddraw.setFontSize(30)
+        stddraw.setPenColor(text_color)
+        text_to_display = "Paused"
+        stddraw.text(self.grid_width / 2, self.grid_height / 2, text_to_display)

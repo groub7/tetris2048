@@ -15,13 +15,19 @@ import copy as cp
 # Main function where this program starts execution
 SCORE = 0
 CLEARED = 0
+COMBINED = 0
 PAUSE_COUNTER = 0
+GAME_OVER = False  # added in order to restart the game properly
+DEBUG = False
 
 
 def start():
     global SCORE
     global CLEARED
+    global COMBINED
     global PAUSE_COUNTER
+    global GAME_OVER
+    global DEBUG
     # Timer for block downfall
     timer_start = -999
     game_speed = 0.5  # In seconds
@@ -38,8 +44,10 @@ def start():
     grid = GameGrid(grid_h, grid_w)
     # create the first tetromino to enter the game grid
     # by using the create_tetromino function defined below
-    current_tetromino = create_tetromino(grid_h, grid_w, grid)
+    current_tetromino = create_tetromino(grid_h, grid_w, grid, DEBUG)
+    next_tetromino = create_tetromino(grid_h, grid_w, grid, DEBUG)
     grid.current_tetromino = current_tetromino
+    grid.next_tetromino = next_tetromino
 
     # display a simple menu before opening the game
     display_game_menu(grid_h, grid_w)
@@ -47,7 +55,7 @@ def start():
     stddraw.setYscale(-0.5, grid_h + 2)
 
     while True:
-        while True:
+        while not GAME_OVER:  # main game
             # check user interactions via the keyboard
             if stddraw.hasNextKeyTyped():
                 key_typed = stddraw.nextKeyTyped()
@@ -75,6 +83,7 @@ def start():
                 elif key_typed == "p":
                     PAUSE_COUNTER = PAUSE_COUNTER + 1
                     if PAUSE_COUNTER % 2 == 1:
+                        grid.display(SCORE, game_over=False, paused=True)
                         keyboard.wait("p")
 
                 # restart
@@ -83,7 +92,34 @@ def start():
                     grid.clear_everything(grid_w, grid_h)
                     SCORE = 0
                     CLEARED = 0
+                    COMBINED = 0
+                    DEBUG = False
                     success = False
+
+                # hold
+                elif key_typed == "c":
+                    # swap
+                    # current_tetromino, next_tetromino = next_tetromino, current_tetromino
+                    # temp = current_tetromino
+                    # current_tetromino = next_tetromino
+                    # next_tetromino = temp
+                    #
+                    #
+                    pass
+
+                # debug mode
+                elif key_typed == "i":
+                    DEBUG = True
+
+                # debug mode #2
+                elif key_typed == "b":
+                    if str(input()) == "buayb":
+                        DEBUG = True
+
+
+                # normal mode
+                elif key_typed == "n":
+                    DEBUG = False
 
                 # clear the queue that stores all the keys pressed/typed
                 stddraw.clearKeysTyped()
@@ -105,29 +141,46 @@ def start():
                 tiles_to_place = current_tetromino.tile_matrix
                 # update the game grid by adding the tiles of the tetromino
                 game_over = grid.update_grid(tiles_to_place)
-                # end the main game loop if the game is over
-                grid.clear_2048(grid_w, grid_h)
+                #  score for combining tiles
+                COMBINED += grid.clear_2048(grid_w, grid_h)
                 grid.delete_alone(grid_w, grid_h)
                 if game_over:
+                    # breaking game's while loop
+                    GAME_OVER = True
                     break
                 # create the next tetromino to enter the game grid
                 # by using the create_tetromino function defined below
-                current_tetromino = create_tetromino(grid_h, grid_w, grid)
+                current_tetromino = create_tetromino(grid_h, grid_w, grid, DEBUG)
                 grid.current_tetromino = current_tetromino
+
+                # next tetromino
+                #
+                # current_tetromino = next_tetromino
+                # next_tetromino = create_tetromino(grid_h, grid_w, grid)
+                # grid.current_tetromino = current_tetromino
+
                 # After spawning move the block once and update success or instant game over
                 success = current_tetromino.move("down", grid)
 
             CLEARED += grid.clear(grid_w, grid_h)
-            SCORE = CLEARED * 100
+            grid.delete_alone(grid_w, grid_h)
+            SCORE = CLEARED * 100 + COMBINED
             # display the game grid and as well the current tetromino
             # grid.clear(grid_w, grid_h)
+            # default display with score
             grid.display(SCORE)
+        # game over screen
+        grid.display(SCORE, GAME_OVER)
+
         # main game loop (keyboard interaction for moving the tetromino)
         if keyboard.is_pressed("y"):
             current_tetromino.clear_tetro(grid)
             grid.clear_everything(grid_w, grid_h)
             SCORE = 0
             CLEARED = 0
+            COMBINED = 0
+            GAME_OVER = False
+            DEBUG = False
             grid = GameGrid(grid_h, grid_w)
             current_tetromino = create_tetromino(grid_h, grid_w, grid)
             grid.current_tetromino = current_tetromino
@@ -141,11 +194,13 @@ def start():
 
 
 # Function for creating random shaped tetrominoes to enter the game grid
-def create_tetromino(grid_height, grid_width, grid):
-    # type (shape) of the tetromino is determined randomly
-    tetromino_types = ['I', 'O', 'Z', 'S', 'L', 'J', 'T']
+def create_tetromino(grid_height, grid_width, grid, debug=False):
     # DEBUG VALUES
-    # tetromino_types = ['I']
+    if debug:
+        tetromino_types = ['I']
+    else:
+        # type (shape) of the tetromino is determined randomly
+        tetromino_types = ['I', 'O', 'Z', 'S', 'L', 'J', 'T']
     random_index = random.randint(0, len(tetromino_types) - 1)
     random_type = tetromino_types[random_index]
     # create and return the tetromino

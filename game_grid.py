@@ -178,7 +178,7 @@ class GameGrid:
                                 self.tile_matrix[i - 1][x] = self.tile_matrix[i][x]
                                 self.tile_matrix[i][x] = None
                         self.clear_2048_effect(tile_matrix_before_clear, x, y)
-                        self.clear_2048(row, col)
+                        counter += self.clear_2048(row, col)
                         return counter
         return 0
 
@@ -208,7 +208,8 @@ class GameGrid:
                                 self.tile_matrix[y][x] = None
                         # belki lazım olur
                         elif y == 19:
-                            if self.tile_matrix[y-1][x] == None and self.tile_matrix[y][x+1] == None and self.tile_matrix[y][x-1] == None:
+                            if self.tile_matrix[y - 1][x] == None and self.tile_matrix[y][x + 1] == None and \
+                                    self.tile_matrix[y][x - 1] == None:
                                 to_add += int(self.tile_matrix[y][x].get_number())
                                 self.tile_matrix[y][x] = None
 
@@ -218,6 +219,60 @@ class GameGrid:
                                 to_add += int(self.tile_matrix[y][x].get_number())
                                 self.tile_matrix[y][x] = None
         return to_add
+
+    def delete_floating(self):
+        labels = np.full((self.grid_height, self.grid_width), 0)
+        to_add = 0
+
+        for y in range(self.grid_height - 1):
+            for x in range(self.grid_width):
+                if self.tile_matrix[y][x] is not None:
+                    not_connected = True
+                    if y == 0:
+                        labels[y][x] = 1
+                        if self.tile_matrix[y + 1][x] is not None:
+                            labels[y + 1][x] = 1
+                        not_connected = False
+                    elif labels[y][x] != 1:
+                        if x != 0:
+                            if self.tile_matrix[y][x - 1] is not None:
+                                if labels[y][x - 1] == 1:
+                                    labels[y][x] = 1
+                                    if self.tile_matrix[y + 1][x] is not None:
+                                        labels[y + 1][x] = 1
+                                    not_connected = False
+                        for i in range(x, self.grid_width - 1):
+                            if self.tile_matrix[y][i] is not None:
+                                if labels[y][i] == 1:
+                                    labels[y][x] = 1
+                                    if self.tile_matrix[y + 1][x] is not None:
+                                        labels[y + 1][x] = 1
+                                    not_connected = False
+                                else:
+                                    continue
+                            break
+                    else:
+                        not_connected = False
+                        if self.tile_matrix[y + 1][x] is not None:
+                            labels[y + 1][x] = 1
+                    if not_connected:
+                        labels[y][x] = 2
+
+        for y in reversed(range(1, self.grid_height)):
+            for x in reversed(range(self.grid_width)):
+                if self.tile_matrix[y][x] is not None:
+                    if labels[y][x] == 1:
+                        if self.tile_matrix[y - 1][x] is not None:
+                            labels[y - 1][x] = 1
+
+        for y in range(self.grid_height):
+            for x in range(self.grid_width):
+                if self.tile_matrix[y][x] is not None:
+                    if labels[y][x] == 2:
+                        to_add += int(self.tile_matrix[y][x].get_number())
+                        self.tile_matrix[y][x] = None
+        return to_add
+
     def clear_everything(self, row, col):
         for y in range(col):
             for x in range(row):

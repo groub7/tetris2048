@@ -131,7 +131,7 @@ def start():
 
             # move (drop) the tetromino down by 1 after set amount of time
             end_time = perf_counter()
-            if end_time - timer_start >= game_speed - (SCORE/150) * 0.025:
+            if end_time - timer_start >= game_speed - (SCORE / 150) * 0.025:
                 success = current_tetromino.move("down", grid)
                 timer_start = perf_counter()
 
@@ -142,9 +142,18 @@ def start():
                 # update the game grid by adding the tiles of the tetromino
                 game_over = grid.update_grid(tiles_to_place)
                 #  score for combining tiles
-                COMBINED += grid.clear_2048(grid_w, grid_h)
-                to_add = grid.delete_alone(grid_w, grid_h)
-                SCORE += to_add
+                # COMBINED += grid.clear_2048(grid_w, grid_h)
+                # to_add = grid.delete_floating()
+                # SCORE += to_add
+                while True:
+                    cleared = grid.clear(grid_w, grid_h)
+                    CLEARED += cleared
+                    cleared_2048 = 0
+                    cleared_2048 += grid.clear_2048(grid_w, grid_h)
+                    COMBINED += cleared_2048
+                    COMBINED += grid.delete_floating()
+                    if cleared + cleared_2048 == 0:
+                        break
                 if game_over:
                     # breaking game's while loop
                     GAME_OVER = True
@@ -162,17 +171,8 @@ def start():
 
                 # After spawning move the block once and update success or instant game over
                 success = current_tetromino.move("down", grid)
-            while True:
-                cleared = grid.clear(grid_w, grid_h)
-                CLEARED += cleared
-                cleared_2048 = grid.clear_2048(grid_w, grid_h)
-                COMBINED += cleared_2048
-                to_add = grid.delete_alone(grid_w, grid_h)
-                if cleared + cleared_2048 == 0:
-                    break
 
             SCORE = CLEARED * 100 + COMBINED
-            SCORE += to_add
             # display the game grid and as well the current tetromino
             # grid.clear(grid_w, grid_h)
             # default display with score

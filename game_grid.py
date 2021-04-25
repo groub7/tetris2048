@@ -179,6 +179,7 @@ class GameGrid:
 
     # If there is a tile that doesn't have any 4-connected neighbours, delete the tile
     def delete_alone(self, row, col):
+        to_add = 0
         for y in range(col - 1):
             for x in range(row):
                 if self.tile_matrix[y][x] != None:
@@ -186,23 +187,25 @@ class GameGrid:
                         if x == 11:  # if the tile is at the righmost place, don't look for the right neighbour
                             if self.tile_matrix[y + 1][x] == None and self.tile_matrix[y - 1][x] == None and \
                                     self.tile_matrix[y][x - 1] == None:
+                                to_add += int(self.tile_matrix[y][x].get_number())
                                 self.tile_matrix[y][x] = None
                         elif x == 0:  # if the tile is at the leftmost place, don't look dot the left neighnour
                             if self.tile_matrix[y + 1][x] == None and self.tile_matrix[y - 1][x] == None and \
                                     self.tile_matrix[y][x + 1] == None:
+                                to_add += int(self.tile_matrix[y][x].get_number())
                                 self.tile_matrix[y][x] = None
-                        # bence bu commentli kısım lazım değil ama bir bug çıkarsa uncomment yapıp deneriz
-                        # elif y == 19:
-                        #     if self.tile_matrix[y-1][x] == None and self.tile_matrix[y][x+1] == None and self.tile_matrix[y][x-1] == None:
-                        #         self.tile_matrix[y][x] = None
-                        # elif y == 0:
-                        #     if self.tile_matrix[y + 1][x] == None and self.tile_matrix[y][x + 1] == None and self.tile_matrix[y][x - 1] == None:
-                        #         self.tile_matrix[y][x] = None
+                        # belki lazım olur
+                        elif y == 19:
+                            if self.tile_matrix[y-1][x] == None and self.tile_matrix[y][x+1] == None and self.tile_matrix[y][x-1] == None:
+                                to_add += int(self.tile_matrix[y][x].get_number())
+                                self.tile_matrix[y][x] = None
+
                         else:  # if the tile is not at the rightmost or leftmost place, look for, up, down, lef and right neighbours
                             if self.tile_matrix[y + 1][x] == None and self.tile_matrix[y - 1][x] == None and \
                                     self.tile_matrix[y][x + 1] == None and self.tile_matrix[y][x - 1] == None:
+                                to_add += int(self.tile_matrix[y][x].get_number())
                                 self.tile_matrix[y][x] = None
-
+        return to_add
     def clear_everything(self, row, col):
         for y in range(col):
             for x in range(row):
@@ -230,14 +233,17 @@ class GameGrid:
     # game over splash screen
     def game_over_screen(self):
         text_color = Color(0, 0, 0)
+        nice_color = Color(188, 143, 143)
         stddraw.setFontFamily("Arial")
         stddraw.setFontSize(30)
-        stddraw.setPenColor(text_color)
+        stddraw.setPenColor(nice_color)
         text_to_display = "GAME OVER"
-        stddraw.text(self.grid_width / 2, self.grid_height / 2, text_to_display)
-        text_to_continue = "To continue press y"
+        stddraw.filledRectangle(self.grid_width / 2 - 5, self.grid_height / 2 - 3.5, 10, 5)
+        stddraw.setPenColor(text_color)
+        stddraw.boldText(self.grid_width / 2, self.grid_height / 2, text_to_display)
+        text_to_continue = "To continue press 'Y'"
         stddraw.text(self.grid_width / 2, self.grid_height / 2 - 1, text_to_continue)
-        text_to_not_continue = "To exit press n"
+        text_to_not_continue = "To exit press 'N'"
         stddraw.text(self.grid_width / 2, self.grid_height / 2 - 2, text_to_not_continue)
 
     # box for next piece
@@ -263,8 +269,11 @@ class GameGrid:
     # game over splash screen
     def paused(self):
         text_color = Color(0, 0, 0)
+        nice_color = Color(188, 143, 143)
         stddraw.setFontFamily("Arial")
         stddraw.setFontSize(30)
-        stddraw.setPenColor(text_color)
+        stddraw.setPenColor(nice_color)
         text_to_display = "Paused"
-        stddraw.text(self.grid_width / 2, self.grid_height / 2, text_to_display)
+        stddraw.filledRectangle(self.grid_width / 2 - 2.5, self.grid_height / 2 - 0.8, 5, 1.7)
+        stddraw.setPenColor(text_color)
+        stddraw.boldText(self.grid_width / 2, self.grid_height / 2, text_to_display)

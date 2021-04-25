@@ -35,7 +35,7 @@ def start():
     grid_h, grid_w = 20, 12
     # set the size of the drawing canvas
     canvas_h, canvas_w = 40 * grid_h, 40 * grid_w
-    stddraw.setCanvasSize(canvas_w + 100, canvas_h + 100)
+    stddraw.setCanvasSize(canvas_w, canvas_h)
     # set the scale of the coordinate system
     stddraw.setXscale(-0.5, grid_w - 0.5)
     stddraw.setYscale(-0.5, grid_h - 0.5)
@@ -142,7 +142,8 @@ def start():
                 game_over = grid.update_grid(tiles_to_place)
                 #  score for combining tiles
                 COMBINED += grid.clear_2048(grid_w, grid_h)
-                grid.delete_alone(grid_w, grid_h)
+                to_add = grid.delete_alone(grid_w, grid_h)
+                SCORE += to_add
                 if game_over:
                     # breaking game's while loop
                     GAME_OVER = True
@@ -162,8 +163,9 @@ def start():
                 success = current_tetromino.move("down", grid)
 
             CLEARED += grid.clear(grid_w, grid_h)
-            grid.delete_alone(grid_w, grid_h)
+            to_add = grid.delete_alone(grid_w, grid_h)
             SCORE = CLEARED * 100 + COMBINED
+            SCORE += to_add
             # display the game grid and as well the current tetromino
             # grid.clear(grid_w, grid_h)
             # default display with score

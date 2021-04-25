@@ -51,7 +51,7 @@ def start():
 
     # display a simple menu before opening the game
     display_game_menu(grid_h, grid_w)
-    stddraw.setXscale(-0.5, grid_w + 2)
+    stddraw.setXscale(-0.5, grid_w + 2.5)
     stddraw.setYscale(-0.5, grid_h - 0.5)
 
     while True:
@@ -143,7 +143,8 @@ def start():
                 game_over = grid.update_grid(tiles_to_place)
                 #  score for combining tiles
                 COMBINED += grid.clear_2048(grid_w, grid_h)
-                grid.delete_alone(grid_w, grid_h)
+                to_add = grid.delete_alone(grid_w, grid_h)
+                SCORE += to_add
                 if game_over:
                     # breaking game's while loop
                     GAME_OVER = True
@@ -163,8 +164,9 @@ def start():
                 success = current_tetromino.move("down", grid)
 
             CLEARED += grid.clear(grid_w, grid_h)
-            grid.delete_alone(grid_w, grid_h)
+            to_add = grid.delete_alone(grid_w, grid_h)
             SCORE = CLEARED * 100 + COMBINED
+            SCORE += to_add
             # display the game grid and as well the current tetromino
             # grid.clear(grid_w, grid_h)
             # default display with score

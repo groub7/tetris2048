@@ -131,7 +131,7 @@ def start():
 
             # move (drop) the tetromino down by 1 after set amount of time
             end_time = perf_counter()
-            if end_time - timer_start >= game_speed - CLEARED * 0.025:
+            if end_time - timer_start >= game_speed - ((SCORE/150)) * 0.025:
                 success = current_tetromino.move("down", grid)
                 timer_start = perf_counter()
 
@@ -162,9 +162,15 @@ def start():
 
                 # After spawning move the block once and update success or instant game over
                 success = current_tetromino.move("down", grid)
+            while True:
+                cleared = grid.clear(grid_w, grid_h)
+                CLEARED += cleared
+                cleared_2048 = grid.clear_2048(grid_w, grid_h)
+                COMBINED += cleared_2048
+                to_add = grid.delete_alone(grid_w, grid_h)
+                if cleared + cleared_2048 == 0:
+                    break
 
-            CLEARED += grid.clear(grid_w, grid_h)
-            to_add = grid.delete_alone(grid_w, grid_h)
             SCORE = CLEARED * 100 + COMBINED
             SCORE += to_add
             # display the game grid and as well the current tetromino

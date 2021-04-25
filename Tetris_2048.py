@@ -116,7 +116,6 @@ def start():
                     if str(input()) == "buayb":
                         DEBUG = True
 
-
                 # normal mode
                 elif key_typed == "n":
                     DEBUG = False

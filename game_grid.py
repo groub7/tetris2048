@@ -248,8 +248,8 @@ class GameGrid:
         text_to_display = "Piece: "
         stddraw.text(self.grid_width + 0.41, self.grid_height - 2, text_to_display)
 
-        # game over splash screen
-    def paused (self):
+    # game over splash screen
+    def paused(self):
         text_color = Color(0, 0, 0)
         stddraw.setFontFamily("Arial")
         stddraw.setFontSize(30)

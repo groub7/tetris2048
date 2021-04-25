@@ -21,7 +21,7 @@ GAME_OVER = False  # added in order to restart the game properly
 DEBUG = False
 
 
-def start ():
+def start():
     global SCORE
     global CLEARED
     global COMBINED
@@ -35,7 +35,7 @@ def start ():
     grid_h, grid_w = 20, 12
     # set the size of the drawing canvas
     canvas_h, canvas_w = 40 * grid_h, 40 * grid_w
-    stddraw.setCanvasSize(canvas_w, canvas_h)
+    stddraw.setCanvasSize(canvas_w + 100, canvas_h + 100)
     # set the scale of the coordinate system
     stddraw.setXscale(-0.5, grid_w - 0.5)
     stddraw.setYscale(-0.5, grid_h - 0.5)
@@ -51,7 +51,7 @@ def start ():
 
     # display a simple menu before opening the game
     display_game_menu(grid_h, grid_w)
-    stddraw.setXscale(-0.5, grid_w + 2)
+    stddraw.setXscale(-0.5, grid_w + 2.5)
     stddraw.setYscale(-0.5, grid_h - 0.5)
 
     while True:
@@ -193,7 +193,7 @@ def start ():
 
 
 # Function for creating random shaped tetrominoes to enter the game grid
-def create_tetromino (grid_height, grid_width, grid, debug=False):
+def create_tetromino(grid_height, grid_width, grid, debug=False):
     # DEBUG VALUES
     if debug:
         tetromino_types = ['I']
@@ -209,7 +209,7 @@ def create_tetromino (grid_height, grid_width, grid, debug=False):
 
 
 # Function for displaying a simple menu before starting the game
-def display_game_menu (grid_height, grid_width):
+def display_game_menu(grid_height, grid_width):
     # colors used for the menu
     background_color = Color(42, 69, 99)
     button_color = Color(25, 255, 228)

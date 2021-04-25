@@ -176,9 +176,6 @@ class Tetromino:
 
     def rotate(self, game_grid):
         n = len(self.tile_matrix)  # n = number of rows = number of columns
-        # if self.can_be_rotated(game_grid) == False:
-        #     return False
-
         # Push amount in case of overflow from edges.
         push_right_num = 0
         push_left_num = 0
@@ -226,6 +223,9 @@ class Tetromino:
                                 push_right_num = 1
                             if col == 2:
                                 push_left_num = 1
+
+        if self.can_be_rotated(game_grid) is False and push_left_num == 0 and push_right_num == 0:
+            return False
 
         should_copy = not (push_right_num > 0 and push_left_num > 0)
         # Updating the tile matrix of the tetromino with the rotated one

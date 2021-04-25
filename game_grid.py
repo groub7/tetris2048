@@ -7,7 +7,7 @@ import copy as cp
 # Class used for modelling the game grid
 class GameGrid:
     # Constructor for creating the game grid based on the given arguments
-    def __init__(self, grid_h, grid_w):
+    def __init__ (self, grid_h, grid_w):
         # set the dimensions of the game grid as the given arguments
         self.grid_height = grid_h
         self.grid_width = grid_w
@@ -29,7 +29,7 @@ class GameGrid:
         self.ghost_tetromino = None
 
     # Method used for displaying the game grid
-    def display(self, SCORE, game_over=False, paused=False):
+    def display (self, SCORE, game_over=False, paused=False):
         # clear the background canvas to empty_cell_color
         stddraw.clear(self.empty_cell_color)
         # draw the game grid
@@ -54,7 +54,7 @@ class GameGrid:
         stddraw.show(16.7)
 
     # Method for drawing the cells and the lines of the grid
-    def draw_grid(self):
+    def draw_grid (self):
         # draw each cell of the game grid
         for row in range(self.grid_height):
             for col in range(self.grid_width):
@@ -74,7 +74,7 @@ class GameGrid:
         stddraw.setPenRadius()  # reset the pen radius to its default value
 
     # Method for drawing the boundaries around the game grid
-    def draw_boundaries(self):
+    def draw_boundaries (self):
         # draw a bounding box around the game grid as a rectangle
         stddraw.setPenColor(self.boundary_color)  # using boundary_color
         # set the pen radius as box_thickness (half of this thickness is visible
@@ -87,7 +87,7 @@ class GameGrid:
 
     # Method used for checking whether the grid cell with given row and column
     # indexes is occupied by a tile or empty
-    def is_occupied(self, row, col):
+    def is_occupied (self, row, col):
         # return False if the cell is out of the grid
         if not self.is_inside(row, col):
             return False
@@ -96,7 +96,7 @@ class GameGrid:
 
     # Method used for checking whether the cell with given row and column indexes
     # is inside the game grid or not
-    def is_inside(self, row, col):
+    def is_inside (self, row, col):
         if row < 0 or row >= self.grid_height:
             return False
         if col < 0 or col >= self.grid_width:
@@ -107,7 +107,7 @@ class GameGrid:
     # tetromino and checking if the game is over due to having tiles above the
     # topmost game grid row. The method returns True when the game is over and
     # False otherwise.
-    def update_grid(self, tiles_to_place):
+    def update_grid (self, tiles_to_place):
         # place all the tiles of the stopped tetromino onto the game grid
         n_rows, n_cols = len(tiles_to_place), len(tiles_to_place[0])
         for col in range(n_cols):
@@ -124,7 +124,7 @@ class GameGrid:
         return self.game_over
 
     # Looks at the grid and clears full lines, then updates the places of upper tiles.
-    def clear(self, row, col):
+    def clear (self, row, col):
         number_of_pushes = 0
         has_clearing_started = False  # If there is a full line this frame, then the clearing process is started.
         tile_matrix_before_clear = cp.deepcopy(self.tile_matrix)
@@ -159,7 +159,7 @@ class GameGrid:
         # Return the number of pushes, which is equal to the number of lines cleared at the end of the process
         return number_of_pushes
 
-    def clear_2048(self, row, col):
+    def clear_2048 (self, row, col):
         counter = 0
         for y in range(col - 1):
             for x in range(row):
@@ -178,7 +178,7 @@ class GameGrid:
         return 0
 
     # If there is a tile that doesn't have any 4-connected neighbours, delete the tile
-    def delete_alone(self, row, col):
+    def delete_alone (self, row, col):
         for y in range(col - 1):
             for x in range(row):
                 if self.tile_matrix[y][x] != None:
@@ -203,12 +203,12 @@ class GameGrid:
                                     self.tile_matrix[y][x + 1] == None and self.tile_matrix[y][x - 1] == None:
                                 self.tile_matrix[y][x] = None
 
-    def clear_everything(self, row, col):
+    def clear_everything (self, row, col):
         for y in range(col):
             for x in range(row):
                 self.tile_matrix[y][x] = None
 
-    def score(self, SCORE):
+    def score (self, SCORE):
         text_color = Color(0, 0, 0)
         stddraw.setFontFamily("Arial")
         stddraw.setFontSize(25)
@@ -216,7 +216,7 @@ class GameGrid:
         text_to_display = "Score: " + str(SCORE)
         stddraw.text(1.2, self.grid_height + 0.5, text_to_display)
 
-    def clear_effect(self, tile_matrix_before_clear, rows_to_clear):
+    def clear_effect (self, tile_matrix_before_clear, rows_to_clear):
         for y in range(self.grid_height):
             for x in range(self.grid_width):
                 if tile_matrix_before_clear[y][x] is not None:
@@ -226,7 +226,7 @@ class GameGrid:
         stddraw.show(250)
 
     # game over splash screen
-    def game_over_screen(self):
+    def game_over_screen (self):
         text_color = Color(0, 0, 0)
         stddraw.setFontFamily("Arial")
         stddraw.setFontSize(30)
@@ -239,7 +239,7 @@ class GameGrid:
         stddraw.text(self.grid_width / 2, self.grid_height / 2 - 2, text_to_not_continue)
 
     # box for next piece
-    def next_piece_box(self):
+    def next_piece_box (self):
         text_color = Color(0, 0, 0)
         stddraw.setPenColor(text_color)
         stddraw.rectangle(self.grid_width - 0.5, self.grid_height - 5, 2.5, 2.5)
@@ -249,7 +249,7 @@ class GameGrid:
         stddraw.text(self.grid_width + 0.41, self.grid_height - 2, text_to_display)
 
     # game over splash screen
-    def paused(self):
+    def paused (self):
         text_color = Color(0, 0, 0)
         stddraw.setFontFamily("Arial")
         stddraw.setFontSize(30)

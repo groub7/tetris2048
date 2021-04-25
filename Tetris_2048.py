@@ -21,7 +21,7 @@ GAME_OVER = False  # added in order to restart the game properly
 DEBUG = False
 
 
-def start():
+def start ():
     global SCORE
     global CLEARED
     global COMBINED
@@ -193,7 +193,7 @@ def start():
 
 
 # Function for creating random shaped tetrominoes to enter the game grid
-def create_tetromino(grid_height, grid_width, grid, debug=False):
+def create_tetromino (grid_height, grid_width, grid, debug=False):
     # DEBUG VALUES
     if debug:
         tetromino_types = ['I']
@@ -209,7 +209,7 @@ def create_tetromino(grid_height, grid_width, grid, debug=False):
 
 
 # Function for displaying a simple menu before starting the game
-def display_game_menu(grid_height, grid_width):
+def display_game_menu (grid_height, grid_width):
     # colors used for the menu
     background_color = Color(42, 69, 99)
     button_color = Color(25, 255, 228)

@@ -18,6 +18,7 @@ COMBINED = 0
 PAUSE_COUNTER = 0
 GAME_OVER = False  # added in order to restart the game properly
 DEBUG = False
+DEBUG_2 = False
 
 
 def start():
@@ -27,6 +28,7 @@ def start():
     global PAUSE_COUNTER
     global GAME_OVER
     global DEBUG
+    global DEBUG_2
     # Timer for block downfall
     timer_start = -999
     game_speed = 0.5  # In seconds
@@ -94,6 +96,7 @@ def start():
                     CLEARED = 0
                     COMBINED = 0
                     DEBUG = False
+                    DEBUG_2 = False
                     success = False
 
                 # hold
@@ -113,12 +116,12 @@ def start():
 
                 # debug mode #2
                 elif key_typed == "b":
-                    if str(input()) == "buayb":
-                        DEBUG = True
+                    DEBUG_2 = True
 
                 # normal mode
                 elif key_typed == "n":
                     DEBUG = False
+                    DEBUG_2 = False
 
                 # clear the queue that stores all the keys pressed/typed
                 stddraw.clearKeysTyped()
@@ -159,7 +162,7 @@ def start():
                     break
                 # create the next tetromino to enter the game grid
                 # by using the create_tetromino function defined below
-                current_tetromino = create_tetromino(grid_h, grid_w, grid, DEBUG)
+                current_tetromino = create_tetromino(grid_h, grid_w, grid, DEBUG, DEBUG_2)
                 grid.current_tetromino = current_tetromino
 
                 # next tetromino
@@ -188,6 +191,7 @@ def start():
             COMBINED = 0
             GAME_OVER = False
             DEBUG = False
+            DEBUG_2 = False
             grid = GameGrid(grid_h, grid_w)
             current_tetromino = create_tetromino(grid_h, grid_w, grid)
             grid.current_tetromino = current_tetromino
@@ -201,9 +205,9 @@ def start():
 
 
 # Function for creating random shaped tetrominoes to enter the game grid
-def create_tetromino(grid_height, grid_width, grid, debug=False):
+def create_tetromino(grid_height, grid_width, grid, debug=False, debug2=False):
     # DEBUG VALUES
-    if debug:
+    if debug or debug2:
         tetromino_types = ['I']
     else:
         # type (shape) of the tetromino is determined randomly
@@ -212,7 +216,10 @@ def create_tetromino(grid_height, grid_width, grid, debug=False):
     random_type = tetromino_types[random_index]
     # create and return the tetromino
     tetromino = Tetromino(random_type, grid_height, grid_width)
-    tetromino.set_random_tile_numbers(grid)
+    if debug2:
+        tetromino.set_random_tile_numbers(grid, debug2)
+    else:
+        tetromino.set_random_tile_numbers(grid)
     return tetromino
 
 

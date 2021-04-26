@@ -15,17 +15,19 @@ class Tile:
     font_family, font_size = "Arial", 14
 
     colors = [
-        Color(238, 230, 219),  # 2
-        Color(236, 224, 200),  # 4
-        Color(239, 178, 124),  # 8
-        Color(243, 151, 104),  # 16
-        Color(243, 125, 99),  # 32
-        Color(244, 96, 66),  # 64
-        Color(235, 206, 115),  # 128
-        Color(237, 203, 103),  # 256
-        Color(236, 200, 90),  # 512
-        Color(231, 194, 87),  # 1024
-        Color(232, 190, 78)  # 2048
+        Color(238, 230, 219),   # 2
+        Color(236, 224, 200),   # 4
+        Color(239, 178, 124),   # 8
+        Color(243, 151, 104),   # 16
+        Color(243, 125, 99),    # 32
+        Color(244, 96, 66),     # 64
+        Color(235, 206, 115),   # 128
+        Color(237, 203, 103),   # 256
+        Color(236, 200, 90),    # 512
+        Color(231, 194, 87),    # 1024
+        Color(232, 190, 78),    # 2048
+        Color(255, 255, 255),   # 4096
+        Color(255, 255, 255),   # 8192
     ]
 
     # Constructor that creates a tile at a given position with 2 as its number

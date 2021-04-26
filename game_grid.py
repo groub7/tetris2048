@@ -285,9 +285,9 @@ class GameGrid:
         stddraw.setFontSize(25)
         stddraw.setPenColor(text_color)
         text_to_display = "Score"
-        stddraw.text(self.grid_width + 1.5, self.grid_height - 1.1, text_to_display)
+        stddraw.text(self.grid_width + 1.15, self.grid_height - 1.1, text_to_display)
         text_to_score = str(SCORE).rjust(8)
-        stddraw.text(self.grid_width + 1.5, self.grid_height - 2, text_to_score)
+        stddraw.text(self.grid_width + 0.92, self.grid_height - 2, text_to_score)
 
     def clear_effect(self, tile_matrix_before_clear, rows_to_clear):
         for y in range(self.grid_height):

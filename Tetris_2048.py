@@ -9,7 +9,6 @@ from time import perf_counter
 import keyboard
 import time
 import copy as cp
-import simpleaudio as sa
 # MAIN FUNCTION OF THE PROGRAM
 # -------------------------------------------------------------------------------
 # Main function where this program starts execution
@@ -19,8 +18,6 @@ COMBINED = 0
 PAUSE_COUNTER = 0
 GAME_OVER = False  # added in order to restart the game properly
 DEBUG = False
-MENU = "./menu_song.wav"
-GAME_OVER_SONG = "./game_over.wav"
 
 
 def start():
@@ -55,10 +52,6 @@ def start():
     display_game_menu(grid_h, grid_w)
     stddraw.setXscale(-0.5, grid_w + 2.5)
     stddraw.setYscale(-0.5, grid_h - 0.5)
-    wave_obj = sa.WaveObject.from_wave_file(MENU)
-    play_obj = wave_obj.play()
-    wave_obj2 = sa.WaveObject.from_wave_file(GAME_OVER_SONG)
-
 
     while True:
         while not GAME_OVER:  # main game
@@ -126,14 +119,6 @@ def start():
                 # normal mode
                 elif key_typed == "n":
                     DEBUG = False
-
-                # mute
-                elif key_typed == "m":
-                    play_obj.stop()
-
-                # play
-                elif key_typed == "l":
-                    play_obj = wave_obj.play()
 
                 # clear the queue that stores all the keys pressed/typed
                 stddraw.clearKeysTyped()

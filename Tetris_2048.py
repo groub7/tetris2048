@@ -131,7 +131,7 @@ def start():
 
             # move (drop) the tetromino down by 1 after set amount of time
             end_time = perf_counter()
-            if end_time - timer_start >= clamp(0.001, 0.11, 5):
+            if end_time - timer_start >= clamp(game_speed - (SCORE / 150) * 0.025, 0.11, 5):
                 success = current_tetromino.move("down", grid)
                 timer_start = perf_counter()
 

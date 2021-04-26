@@ -26,8 +26,8 @@ class Tile:
         Color(236, 200, 90),    # 512
         Color(231, 194, 87),    # 1024
         Color(232, 190, 78),    # 2048
-        Color(255, 255, 255),   # 4096
-        Color(255, 255, 255),   # 8192
+        Color(0, 0, 0),   # 4096
+        Color(0, 0, 0),   # 8192
     ]
 
     # Constructor that creates a tile at a given position with 2 as its number

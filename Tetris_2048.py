@@ -131,7 +131,7 @@ def start():
 
             # move (drop) the tetromino down by 1 after set amount of time
             end_time = perf_counter()
-            if end_time - timer_start >= game_speed - (SCORE / 150) * 0.025:
+            if end_time - timer_start >= clamp(0.001, 0.11, 5):
                 success = current_tetromino.move("down", grid)
                 timer_start = perf_counter()
 
@@ -260,6 +260,10 @@ def display_game_menu(grid_height, grid_width):
             if button_blc_x <= mouse_x <= button_blc_x + button_w:
                 if button_blc_y <= mouse_y <= button_blc_y + button_h:
                     break  # break the loop to end the method and start the game
+
+
+def clamp(n, minn, maxn):
+    return max(min(maxn, n), minn)
 
 
 # start() function is specified as the entry point (main function) from which

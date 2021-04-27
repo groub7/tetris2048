@@ -148,11 +148,11 @@ def start():
                 # to_add = grid.delete_floating()
                 # SCORE += to_add
                 while True:
-                    cleared = grid.clear(grid_w, grid_h)
-                    CLEARED += cleared
                     cleared_2048 = 0
                     cleared_2048 += grid.clear_2048(grid_w, grid_h)
                     COMBINED += cleared_2048
+                    cleared = grid.clear(grid_w, grid_h)
+                    CLEARED += cleared
                     COMBINED += grid.delete_floating()
                     if cleared + cleared_2048 == 0:
                         break
